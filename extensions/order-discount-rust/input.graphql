@@ -1,0 +1,16 @@
+query Input {
+  discountNode {
+    metafield(namespace: "app-polyglot-functions", key: "function-configuration") {
+      value
+    }
+  }
+  cart {
+    buyerIdentity {
+      customer {
+        metafield(namespace: "app-polyglot-functions", key: "vip") {
+          value
+        }
+      }
+    }
+  }
+}

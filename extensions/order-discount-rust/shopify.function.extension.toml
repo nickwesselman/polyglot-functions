@@ -1,0 +1,11 @@
+name = "order-discount-rust"
+type = "order_discounts"
+api_version = "2022-07"
+
+[build]
+command = "cargo wasi build --release"
+path = "target/wasm32-wasi/release/order-discount-rust.wasm"
+
+[ui.paths]
+create = "/"
+details = "/"
