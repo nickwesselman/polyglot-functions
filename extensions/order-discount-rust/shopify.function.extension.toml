@@ -7,5 +7,5 @@ command = "cargo wasi build --release"
 path = "target/wasm32-wasi/release/order-discount-rust.wasm"
 
 [ui.paths]
-create = "/"
-details = "/"
+create = "/discount/bc600f96-2f89-4a7c-bb36-83b544d8b0bd/new"
+details = "/discount/bc600f96-2f89-4a7c-bb36-83b544d8b0bd/:id"

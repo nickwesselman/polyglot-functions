@@ -12,6 +12,8 @@ import productCreator from "./helpers/product-creator.js";
 import { BillingInterval } from "./helpers/ensure-billing.js";
 import { AppInstallations } from "./app_installations.js";
 
+import metafields from "./frontend/metafields.js";
+
 const USE_ONLINE_TOKENS = false;
 const TOP_LEVEL_OAUTH_COOKIE = "shopify_top_level_oauth";
 
@@ -22,6 +24,129 @@ const DEV_INDEX_PATH = `${process.cwd()}/frontend/`;
 const PROD_INDEX_PATH = `${process.cwd()}/frontend/dist/`;
 
 const DB_PATH = `${process.cwd()}/database.sqlite`;
+
+const CREATE_CODE_MUTATION = `
+  mutation CreateCodeDiscount($discount: DiscountCodeAppInput!) {
+    discountCreate: discountCodeAppCreate(codeAppDiscount: $discount) {
+      userErrors {
+        code
+        message
+        field
+      }
+    }
+  }
+`;
+const CREATE_AUTOMATIC_MUTATION = `
+  mutation CreateAutomaticDiscount($discount: DiscountAutomaticAppInput!) {
+    discountCreate: discountAutomaticAppCreate(
+      automaticAppDiscount: $discount
+    ) {
+      userErrors {
+        code
+        message
+        field
+      }
+    }
+  }
+`;
+const GET_DISCOUNT_QUERY = `
+  query GetDiscount($id: ID!) {
+    discountNode(id: $id) {
+      id
+      configurationField: metafield(
+        namespace: "${metafields.namespace}"
+        key: "${metafields.key}"
+      ) {
+        id
+        value
+      }
+      discount {
+        __typename
+        ... on DiscountAutomaticApp {
+          title
+          discountClass
+          combinesWith {
+            orderDiscounts
+            productDiscounts
+            shippingDiscounts
+          }
+          startsAt
+          endsAt
+        }
+        ... on DiscountCodeApp {
+          title
+          discountClass
+          combinesWith {
+            orderDiscounts
+            productDiscounts
+            shippingDiscounts
+          }
+          startsAt
+          endsAt
+          usageLimit
+          appliesOncePerCustomer
+          codes(first: 1) {
+            nodes {
+              code
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const UPDATE_AUTOMATIC_MUTATION = `
+  mutation UpdateDiscount($id: ID!, $discount: DiscountAutomaticAppInput!) {
+    discountUpdate: discountAutomaticAppUpdate(
+      id: $id
+      automaticAppDiscount: $discount
+    ) {
+      userErrors {
+        code
+        message
+        field
+      }
+    }
+  }
+`;
+
+const UPDATE_CODE_MUTATION = `
+  mutation UpdateDiscount($id: ID!, $discount: DiscountCodeAppInput!) {
+    discountUpdate: discountCodeAppUpdate(id: $id, codeAppDiscount: $discount) {
+      userErrors {
+        code
+        message
+        field
+      }
+    }
+  }
+`;
+
+const DELETE_AUTOMATIC_MUTATION = `
+  mutation DeleteDiscount($id: ID!) {
+    discountDelete: discountAutomaticDelete(id: $id) {
+      userErrors {
+        code
+        message
+        field
+      }
+    }
+  }
+`;
+
+const DELETE_CODE_MUTATION = `
+  mutation DeleteDiscount($id: ID!) {
+    discountDelete: discountCodeDelete(id: $id) {
+      userErrors {
+        code
+        message
+        field
+      }
+    }
+  }
+`;
+
 
 Shopify.Context.initialize({
   API_KEY: process.env.SHOPIFY_API_KEY,
@@ -137,6 +262,72 @@ export async function createServer(
   // All endpoints after this point will have access to a request.body
   // attribute, as a result of the express.json() middleware
   app.use(express.json());
+
+  const runDiscountMutation = async (req, res, mutation) => {
+    const session = await Shopify.Utils.loadCurrentSession(
+      req,
+      res,
+      app.get("use-online-tokens")
+    );
+
+    const client = new Shopify.Clients.Graphql(
+      session?.shop,
+      session?.accessToken
+    );
+
+    const data = await client.query({
+      data: {
+        query: mutation,
+        variables: req.body,
+      },
+    });
+
+    res.send(data.body);
+  };
+
+  app.post("/api/discounts/code", async (req, res) => {
+    await runDiscountMutation(req, res, CREATE_CODE_MUTATION);
+  });
+
+  app.post("/api/discounts/automatic", async (req, res) => {
+    await runDiscountMutation(req, res, CREATE_AUTOMATIC_MUTATION);
+  });
+
+  function idToGid(resource, id) {
+    return `gid://shopify/${resource}/${id}`;
+  }
+
+  app.get("/api/discounts/:discountId", async (req, res) => {
+    req.body = {
+      id: idToGid("DiscountNode", req.params.discountId),
+    };
+
+    await runDiscountMutation(req, res, GET_DISCOUNT_QUERY);
+  });
+
+  app.post("/api/discounts/automatic/:discountId", async (req, res) => {
+    req.body.id = idToGid("DiscountAutomaticApp", req.params.discountId);
+
+    await runDiscountMutation(req, res, UPDATE_AUTOMATIC_MUTATION);
+  });
+
+  app.post("/api/discounts/code/:discountId", async (req, res) => {
+    req.body.id = idToGid("DiscountCodeApp", req.params.discountId);
+
+    await runDiscountMutation(req, res, UPDATE_CODE_MUTATION);
+  });
+
+  app.delete("/api/discounts/automatic/:discountId", async (req, res) => {
+    req.body.id = idToGid("DiscountAutomaticApp", req.params.discountId);
+
+    await runDiscountMutation(req, res, DELETE_AUTOMATIC_MUTATION);
+  });
+
+  app.delete("/api/discounts/code/:discountId", async (req, res) => {
+    req.body.id = idToGid("DiscountCodeApp", req.params.discountId);
+
+    await runDiscountMutation(req, res, DELETE_CODE_MUTATION);
+  });
 
   app.use((req, res, next) => {
     const shop = req.query.shop;
