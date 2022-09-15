@@ -1,0 +1,11 @@
+name = "order-discount-golang"
+type = "order_discounts"
+api_version = "2022-07"
+
+[build]
+command = "bash build.sh"
+path = "build/order-discount-golang.wasm"
+
+[ui.paths]
+create = "/discount/25530f94-ebba-42cc-ac86-586b7db1c928/new"
+details = "/discount/25530f94-ebba-42cc-ac86-586b7db1c928/:id"
