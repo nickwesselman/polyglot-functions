@@ -36,22 +36,36 @@ func main() {
 }
 
 func function(input api.InputResponse) api.FunctionResult {
-	var vipMetafield = input.Cart.BuyerIdentity.Customer.Metafield
-	if vipMetafield.Value != "true" {
-		return api.FunctionResult{
-			Discounts:                   []api.Discount{},
-			DiscountApplicationStrategy: api.DiscountApplicationStrategyFirst,
-		}
+	var emptyResult = api.FunctionResult{
+		Discounts:                   []api.Discount{},
+		DiscountApplicationStrategy: api.DiscountApplicationStrategyFirst,
+	}
+	var buyer = input.Cart.BuyerIdentity
+	if buyer == nil {
+		return emptyResult
+	}
+	var customer = buyer.Customer
+	if customer == nil {
+		return emptyResult
+	}
+	var vipMetafield = customer.Metafield
+	if vipMetafield == nil || vipMetafield.Value != "true" {
+		return emptyResult
 	}
 
 	var message = "VIP Discount"
-	var config = input.DiscountNode.GetConfiguration()
+	var discountPercentage = 0.0
+	var configuration = input.DiscountNode.GetConfiguration()
+	if configuration != nil {
+		discountPercentage = configuration.DiscountPercentage
+	}
+
 	return api.FunctionResult{
 		Discounts: []api.Discount{
 			api.Discount{
 				Value: api.Value{
 					Percentage: &api.Percentage{
-						Value: config.DiscountPercentage,
+						Value: discountPercentage,
 					},
 				},
 				Message: &message,
@@ -62,6 +76,7 @@ func function(input api.InputResponse) api.FunctionResult {
 						},
 					},
 				},
+				Conditions: []api.Condition{},
 			},
 		},
 		DiscountApplicationStrategy: api.DiscountApplicationStrategyMaximum,

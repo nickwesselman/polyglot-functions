@@ -1,6 +1,8 @@
 # This is a mock mutation that exists only for code generation purposes.
 
-# We need to use genqclient directives here to ensure proper behavior when the 'oneOf' directive is used in the schema
+# We need to use genqclient directives here to ensure proper behavior when the
+# 'oneOf' directive is used in the schema
+
 # @genqlient(for: "Target.orderSubtotal", pointer: true, omitempty: true)
 # @genqlient(for: "Target.productVariant", pointer: true, omitempty: true)
 # @genqlient(for: "Value.fixedAmount", pointer: true, omitempty: true)
