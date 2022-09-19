@@ -10,8 +10,8 @@ then
     echo "Installing easyjson..."
     go install github.com/mailru/easyjson/...@latest
 fi
-easyjson -all api/generated_graphql.go
 easyjson -all api/configuration.go
+easyjson -all api/generated_graphql.go
 
 mkdir -p build
 tinygo build -target wasi -scheduler=none -gc=leaking -opt z -no-debug -o build/order-discount-golang-unopt.wasm ./main

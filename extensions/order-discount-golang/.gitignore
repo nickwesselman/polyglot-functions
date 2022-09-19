@@ -1,1 +1,2 @@
 api/generated*.go
+api/*_easyjson.go
