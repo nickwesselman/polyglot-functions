@@ -1,8 +1,12 @@
 use serde::{Deserialize, Serialize};
 use graphql_client::GraphQLQuery;
 
-mod api;
-use api::*;
+// custom scalars
+pub type Boolean = bool;
+pub type Decimal = f64;
+pub type Int = i32;
+pub type ID = String;
+type Void = String;
 
 #[derive(GraphQLQuery)]
 #[graphql(
@@ -12,6 +16,16 @@ use api::*;
     normalization = "rust",
 )]
 struct Input;
+
+#[derive(GraphQLQuery)]
+#[graphql(
+    schema_path = "schema.graphql",
+    query_path = "output.graphql",
+    response_derives = "Debug, Clone, Deserialize, Default",
+    normalization = "rust",
+    skip_serializing_none,
+)]
+struct Output;
 
 #[derive(Clone, Debug, Serialize, Deserialize, Default)]
 #[serde(rename_all = "camelCase")]
@@ -42,10 +56,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn function(input: input::ResponseData) -> Result<FunctionResult, Box<dyn std::error::Error>> {
-    let no_discount = FunctionResult {
+fn function(input: input::ResponseData) -> Result<output::FunctionResult, Box<dyn std::error::Error>> {
+    let no_discount = output::FunctionResult {
         discounts: vec![],
-        discount_application_strategy: DiscountApplicationStrategy::First,
+        discount_application_strategy: output::DiscountApplicationStrategy::First,
     };
     let buyer = match input.cart.buyer_identity {
         Some(ref buyer) => buyer,
@@ -64,19 +78,25 @@ fn function(input: input::ResponseData) -> Result<FunctionResult, Box<dyn std::e
     }
 
     let config = input.configuration();
-    Ok(FunctionResult {
+    Ok(output::FunctionResult {
         discounts: vec![
-            Discount {
-                value: Value::Percentage {
-                    value: config.discount_percentage,
+            output::Discount {
+                value: output::Value {
+                    percentage: Some(output::Percentage {
+                        value: config.discount_percentage,
+                    }),
+                    fixed_amount: None,
                 },
-                targets: vec![Target::OrderSubtotal {
-                    excluded_variant_ids: vec![],
+                targets: vec![output::Target {
+                    order_subtotal: Some(output::OrderSubtotalTarget {
+                        excluded_variant_ids: vec![],
+                    }),
+                    product_variant: None,
                 }],
                 message: Some("VIP Discount".to_string()),
                 conditions: None,
             },
         ],
-        discount_application_strategy: DiscountApplicationStrategy::Maximum,
+        discount_application_strategy: output::DiscountApplicationStrategy::Maximum,
     })
 }

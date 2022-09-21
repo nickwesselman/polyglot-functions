@@ -1,0 +1,7 @@
+# This is a mock mutation that exists only for code generation purposes.
+
+mutation Output(
+    $result: FunctionResult!
+) {
+    handleResult(result: $result)
+}
