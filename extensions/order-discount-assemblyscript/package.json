@@ -5,6 +5,7 @@
   "author": "Nick Wesselman",
   "license": "MIT",
   "devDependencies": {
+    "@assemblyscript/wasi-shim": "^0.1.0",
     "assemblyscript": "^0.21.3"
   },
   "type": "module",
@@ -23,9 +24,6 @@
     "generate": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
-    "as-wasi": "^0.5.1",
-    "graphql": "^16.6.0",
-    "json-as": "^0.5.0",
-    "visitor-as": "^0.10.2"
+    "assemblyscript-json": "^1.1.0"
   }
 }

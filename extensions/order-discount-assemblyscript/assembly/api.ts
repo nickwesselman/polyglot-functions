@@ -1,39 +1,97 @@
-import { JSON } from "json-as/assembly";
+import { JSON, JSONEncoder } from "assemblyscript-json/assembly"; 
 
 /**
  * Input Types
  * These represent what's needed for our input query.
  **/
+export class FunctionInput {
+  cart: Cart | null = null;
+  discountNode: DiscountNode | null = null;
 
-@json
-export class Metafield {
-  value: string
+  static parse(input: string): FunctionInput {
+    const inputObj: JSON.Obj = <JSON.Obj>(JSON.parse(input));
+    const parsed = new FunctionInput();
+    parsed.unmarshal(inputObj);
+    return parsed;
+  }
+
+  unmarshal(jsonObj: JSON.Obj): void {
+    let cartObj: JSON.Obj | null = jsonObj.getObj("cart");
+    if (cartObj != null) {
+      const cart = new Cart();
+      cart.unmarshal(cartObj);
+      this.cart = cart;
+    }
+    let discountObj: JSON.Obj | null = jsonObj.getObj("discountNode");
+    if (discountObj != null) {
+      const discountNode = new DiscountNode();
+      discountNode.unmarshal(discountObj);
+      this.discountNode = discountNode;
+    }
+  }
 }
 
-@json
-export class Customer {
-  metafield: Metafield | null
-}
-
-@json
-export class BuyerIdentity {
-  customer: Customer | null
-}
-
-@json
 export class Cart {
   buyerIdentity: BuyerIdentity | null
+
+  unmarshal(jsonObj: JSON.Obj): void {
+    let buyerIdentityObj: JSON.Obj | null = jsonObj.getObj("buyerIdentity");
+    if (buyerIdentityObj != null) {
+      const buyerIdentity = new BuyerIdentity();
+      buyerIdentity.unmarshal(buyerIdentityObj);
+      this.buyerIdentity = buyerIdentity;
+    }
+  }
 }
 
-@json
+export class BuyerIdentity {
+  customer: Customer | null = null;
+
+  unmarshal(jsonObj: JSON.Obj): void {
+    let customerObj: JSON.Obj | null = jsonObj.getObj("customer");
+    if (customerObj != null) {
+      const customer = new Customer();
+      customer.unmarshal(customerObj);
+      this.customer = customer;
+    }
+  }
+}
+
 export class DiscountNode {
-    metafield: Metafield
+  metafield: Metafield | null = null;
+
+  unmarshal(jsonObj: JSON.Obj): void {
+    let metafieldObj: JSON.Obj | null = jsonObj.getObj("metafield");
+    if (metafieldObj != null) {
+      const metafield = new Metafield();
+      metafield.unmarshal(metafieldObj);
+      this.metafield = metafield;
+    }
+  }
 }
 
-@json
-export class FunctionInput {
-    cart: Cart
-    discountNode: DiscountNode
+export class Customer {
+  metafield: Metafield | null = null;
+
+  unmarshal(jsonObj: JSON.Obj): void {
+    let metafieldObj: JSON.Obj | null = jsonObj.getObj("metafield");
+    if (metafieldObj != null) {
+      const metafield = new Metafield();
+      metafield.unmarshal(metafieldObj);
+      this.metafield = metafield;
+    }
+  }
+}
+
+export class Metafield {
+  value: string | null = null;
+
+  unmarshal(jsonObj: JSON.Obj): void {
+    let valueObj = jsonObj.getString("value");
+    if (valueObj != null) {
+      this.value = valueObj.valueOf();
+    }
+  }
 }
 
 /**
@@ -41,36 +99,88 @@ export class FunctionInput {
  * These just represent the part of the schema needed for this function.
  **/
 
-@json
 export class PercentageValue {
-    value: f64
+    value: f64 = 0;
+
+    marshal(encoder: JSONEncoder): void {
+      encoder.setFloat("value", this.value);
+    }
 }
 
-@json
 export class PercentageValueType {
-    percentage: PercentageValue
+    percentage: PercentageValue = new PercentageValue();
+
+    marshal(encoder: JSONEncoder): void {
+      encoder.pushObject("percentage");
+      this.percentage.marshal(encoder);
+      encoder.popObject();
+    }
 }
 
-@json
 export class OrderSubtotalTarget {
-    excludedVariantIds: string[]
+    excludedVariantIds: string[] = [];
+
+    marshal(encoder: JSONEncoder): void {
+      encoder.pushArray("excludedVariantIds");
+      for (let i = 0; i < this.excludedVariantIds.length; i++) {
+        encoder.setString(null, this.excludedVariantIds[i]);
+      }
+      encoder.popArray();
+    }
 }
 
-@json
 export class OrderDiscount {
-    message: string
-    targets: OrderSubtotalTarget[]
-    value: PercentageValueType
+    message: string | null = null;
+    targets: OrderSubtotalTarget[] = [];
+    value: PercentageValueType | null = null;
+
+    marshal(encoder: JSONEncoder): void {
+      if (this.message != null) {
+        encoder.setString("message", this.message!);
+      }
+      encoder.pushArray("targets");
+      for (let i = 0; i < this.targets.length; i++) {
+        encoder.pushObject(null);
+        this.targets[i].marshal(encoder);
+        encoder.popObject();
+      }
+      encoder.popArray();
+      if (this.value != null) {
+        encoder.pushObject("value");
+        this.value!.marshal(encoder);
+        encoder.popObject();
+      }
+    }
 }
 
-@json
 export class DiscountCondition {
     // unused
 }
 
-@json
 export class FunctionResult {
-    discountApplicationStrategy: string
-    discounts: OrderDiscount[]
-    conditions: DiscountCondition[]
+    discountApplicationStrategy: string | null = null;
+    discounts: OrderDiscount[] = [];
+    conditions: DiscountCondition[] = [];
+
+    marshal(): string {
+      let encoder = new JSONEncoder();
+      encoder.pushObject(null);
+      
+      if (this.discountApplicationStrategy != null) {
+        encoder.setString("discountApplicationStrategy", this.discountApplicationStrategy!);
+      }
+      encoder.pushArray("discounts");
+      for (let i = 0; i < this.discounts.length; i++) {
+        encoder.pushObject(null);
+        this.discounts[i].marshal(encoder);
+        encoder.popObject();
+      }
+      encoder.popArray();
+      // unused
+      encoder.pushArray("conditions");
+      encoder.popArray();
+
+      encoder.popObject();
+      return encoder.toString();
+    }
 }

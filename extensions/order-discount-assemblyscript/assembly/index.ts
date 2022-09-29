@@ -1,11 +1,8 @@
-import { FunctionInput, FunctionResult } from "./api";
-import { JSON } from "json-as/assembly";
-import { Console } from "as-wasi/assembly";
+import { FunctionInput, FunctionResult, OrderSubtotalTarget } from "./api";
+import { Console } from "./console";
 
-var input = Console.readAll()!;
-const parsed = JSON.parse<FunctionInput>(input);
-
-Console.error(`Hello, AssemblyScript! ${parsed.discountNode.metafield.value}`);
+const input = FunctionInput.parse(Console.readAll()!);
+Console.error(`Hello, AssemblyScript! ${input.discountNode!.metafield!.value!}`);
 
 const output: FunctionResult = {
   conditions: [],
@@ -27,4 +24,4 @@ const output: FunctionResult = {
   ]
 }
 
-Console.log(JSON.stringify<FunctionResult>(output));
+Console.log(output.marshal());
