@@ -118,6 +118,16 @@ export class PercentageValueType {
 }
 
 export class OrderSubtotalTarget {
+    orderSubtotal: OrderSubtotalTargetType = new OrderSubtotalTargetType();
+
+    marshal(encoder: JSONEncoder): void {
+      encoder.pushObject("orderSubtotal");
+      this.orderSubtotal.marshal(encoder);
+      encoder.popObject();
+    }
+}
+
+export class OrderSubtotalTargetType {
     excludedVariantIds: string[] = [];
 
     marshal(encoder: JSONEncoder): void {
@@ -153,14 +163,9 @@ export class OrderDiscount {
     }
 }
 
-export class DiscountCondition {
-    // unused
-}
-
 export class FunctionResult {
     discountApplicationStrategy: string | null = null;
     discounts: OrderDiscount[] = [];
-    conditions: DiscountCondition[] = [];
 
     marshal(): string {
       let encoder = new JSONEncoder();
@@ -175,9 +180,6 @@ export class FunctionResult {
         this.discounts[i].marshal(encoder);
         encoder.popObject();
       }
-      encoder.popArray();
-      // unused
-      encoder.pushArray("conditions");
       encoder.popArray();
 
       encoder.popObject();

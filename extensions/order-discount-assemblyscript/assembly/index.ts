@@ -4,15 +4,21 @@ import { Console } from "./console";
 const input = FunctionInput.parse(Console.readAll()!);
 Console.error(`Hello, AssemblyScript! ${input.discountNode!.metafield!.value!}`);
 
+const emptyResult: FunctionResult = {
+  discountApplicationStrategy: "MAXIMUM",
+  discounts: []
+}
+
 const output: FunctionResult = {
-  conditions: [],
   discountApplicationStrategy: "MAXIMUM",
   discounts: [
     {
       message: "Hello, AssemblyScript!",
       targets: [
         {
-          excludedVariantIds: [],
+          orderSubtotal: {
+            excludedVariantIds: [],
+          }
         }
       ],
       value: {
