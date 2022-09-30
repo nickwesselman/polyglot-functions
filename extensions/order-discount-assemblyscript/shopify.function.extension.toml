@@ -3,7 +3,7 @@ type = "order_discounts"
 api_version = "2022-07"
 
 [build]
-command = "yarn asbuild:release"
+command = "bash build.sh"
 path = "build/release.wasm"
 
 [ui.paths]

@@ -1,33 +1,45 @@
-import { FunctionInput, FunctionResult, OrderSubtotalTarget } from "./api";
+import { FunctionInput, FunctionResult, Configuration } from "./api";
 import { Console } from "./console";
 
 const input = FunctionInput.parse(Console.readAll()!);
-Console.error(`Hello, AssemblyScript! ${input.discountNode!.metafield!.value!}`);
+const configuration = Configuration.parse(input.discountNode!.metafield!.value!);
 
-const emptyResult: FunctionResult = {
-  discountApplicationStrategy: "MAXIMUM",
-  discounts: []
-}
+let result: FunctionResult;
 
-const output: FunctionResult = {
-  discountApplicationStrategy: "MAXIMUM",
-  discounts: [
-    {
-      message: "Hello, AssemblyScript!",
-      targets: [
-        {
-          orderSubtotal: {
-            excludedVariantIds: [],
+if (input.cart!.buyerIdentity == null ||
+    input.cart!.buyerIdentity!.customer == null ||
+    input.cart!.buyerIdentity!.customer!.metafield == null ||
+    input.cart!.buyerIdentity!.customer!.metafield!.value != "true") {
+  
+  // no discount
+  result = {
+    discountApplicationStrategy: "MAXIMUM",
+    discounts: []
+  }
+
+} else {
+
+  result = {
+    discountApplicationStrategy: "MAXIMUM",
+    discounts: [
+      {
+        message: "VIP Discount",
+        targets: [
+          {
+            orderSubtotal: {
+              excludedVariantIds: [],
+            }
+          }
+        ],
+        value: {
+          percentage: {
+            value: configuration.discountPercentage,
           }
         }
-      ],
-      value: {
-        percentage: {
-          value: 10.5,
-        }
       }
-    }
-  ]
+    ]
+  }
+
 }
 
-Console.log(output.marshal());
+Console.log(result.marshal());

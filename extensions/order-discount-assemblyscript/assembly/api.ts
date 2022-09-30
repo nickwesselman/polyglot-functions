@@ -1,4 +1,5 @@
 import { JSON, JSONEncoder } from "assemblyscript-json/assembly"; 
+import { Console } from "./console";
 
 /**
  * Input Types
@@ -90,6 +91,32 @@ export class Metafield {
     let valueObj = jsonObj.getString("value");
     if (valueObj != null) {
       this.value = valueObj.valueOf();
+    }
+  }
+}
+
+/**
+ * Configuration Types
+ * These represent the JSON metafield where we are storing our configuration.
+ */
+export class Configuration {
+  discountPercentage: f64 = 0.0;
+
+  static parse(input: string): Configuration {
+    const inputObj: JSON.Obj = <JSON.Obj>(JSON.parse(input));
+    const parsed = new Configuration();
+    parsed.unmarshal(inputObj);
+    return parsed;
+  }
+
+  unmarshal(jsonObj: JSON.Obj): void {
+    let discountPercentageObj = jsonObj.getValue("discountPercentage");
+    if (discountPercentageObj != null) {
+      if (discountPercentageObj.isFloat) {
+        this.discountPercentage = (<JSON.Float>discountPercentageObj).valueOf();
+      } else if (discountPercentageObj.isInteger) {
+        this.discountPercentage = (f64)((<JSON.Integer>discountPercentageObj).valueOf());
+      }
     }
   }
 }
