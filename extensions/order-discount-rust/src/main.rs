@@ -1,12 +1,9 @@
-use shopify_function::{
-    input_query,
-    scalars::*,
-    serde::{Deserialize, Serialize},
-    serde_json, shopify_function, Result,
-};
+use serde::{Deserialize, Serialize};
+use shopify_function::prelude::*;
+use shopify_function::Result;
 
+generate_types!(query_path = "./input.graphql", schema_path = "./schema.graphql");
 
-#[input_query(query_path = "./input.graphql", schema_path = "./schema.graphql")]
 #[derive(Serialize, Deserialize, Default, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct Configuration {
@@ -19,17 +16,17 @@ impl Configuration {
     }
 }
 
-impl input_query::ResponseData {
+impl input::ResponseData {
     pub fn configuration(&self) -> Configuration {
         match &self.discount_node.metafield {
-            Some(input_query::InputQueryDiscountNodeMetafield { value }) => Configuration::from_str(value),
+            Some(input::InputDiscountNodeMetafield { value }) => Configuration::from_str(value),
             None => Configuration::default(),
         }
     }
 }
 
 #[shopify_function]
-fn function(input: input_query::ResponseData) -> Result<output::FunctionResult> {
+fn function(input: input::ResponseData) -> Result<output::FunctionResult> {
     let no_discount = output::FunctionResult {
         discounts: vec![],
         discount_application_strategy: output::DiscountApplicationStrategy::FIRST,

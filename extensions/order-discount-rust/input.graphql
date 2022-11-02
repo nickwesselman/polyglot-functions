@@ -1,4 +1,4 @@
-query InputQuery {
+query Input {
   discountNode {
     metafield(namespace: "app-polyglot-functions", key: "function-config") {
       value
