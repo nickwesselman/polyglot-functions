@@ -31,18 +31,9 @@ fn function(input: input::ResponseData) -> Result<output::FunctionResult> {
         discounts: vec![],
         discount_application_strategy: output::DiscountApplicationStrategy::FIRST,
     };
-    let buyer = match input.cart.buyer_identity {
-        Some(ref buyer) => buyer,
-        None => return Ok(no_discount),
-    };
-    let customer = match buyer.customer {
-        Some(ref customer) => customer,
-        None => return Ok(no_discount),
-    };
-    let vip_metafield = match customer.metafield {
-        Some(ref metafield) => metafield,
-        None => return Ok(no_discount),
-    };
+    let Some(buyer) = &input.cart.buyer_identity else { return Ok(no_discount) };
+    let Some(ref customer) = buyer.customer else { return Ok(no_discount) };
+    let Some(ref vip_metafield) = customer.metafield else { return Ok(no_discount) };
     if vip_metafield.value != "true" {
         return Ok(no_discount);
     }
