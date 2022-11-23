@@ -1,33 +1,10 @@
 use serde::{Deserialize, Serialize};
-use graphql_client::GraphQLQuery;
+use shopify_function::prelude::*;
+use shopify_function::Result;
 
-// custom scalars
-pub type Boolean = bool;
-pub type Decimal = f64;
-pub type Int = i32;
-pub type ID = String;
-type Void = String;
+generate_types!(query_path = "./input.graphql", schema_path = "./schema.graphql");
 
-#[derive(GraphQLQuery)]
-#[graphql(
-    schema_path = "schema.graphql",
-    query_path = "input.graphql",
-    response_derives = "Debug, Clone, Deserialize, Default",
-    normalization = "rust",
-)]
-struct Input;
-
-#[derive(GraphQLQuery)]
-#[graphql(
-    schema_path = "schema.graphql",
-    query_path = "output.graphql",
-    response_derives = "Debug, Clone, Deserialize, Default",
-    normalization = "rust",
-    skip_serializing_none,
-)]
-struct Output;
-
-#[derive(Clone, Debug, Serialize, Deserialize, Default)]
+#[derive(Serialize, Deserialize, Default, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct Configuration {
     discount_percentage: f64,
@@ -48,31 +25,15 @@ impl input::ResponseData {
     }
 }
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let input: input::ResponseData = serde_json::from_reader(std::io::BufReader::new(std::io::stdin()))?;
-    let mut out = std::io::stdout();
-    let mut serializer = serde_json::Serializer::new(&mut out);
-    function(input)?.serialize(&mut serializer)?;
-    Ok(())
-}
-
-fn function(input: input::ResponseData) -> Result<output::FunctionResult, Box<dyn std::error::Error>> {
+#[shopify_function]
+fn function(input: input::ResponseData) -> Result<output::FunctionResult> {
     let no_discount = output::FunctionResult {
         discounts: vec![],
-        discount_application_strategy: output::DiscountApplicationStrategy::First,
+        discount_application_strategy: output::DiscountApplicationStrategy::FIRST,
     };
-    let buyer = match input.cart.buyer_identity {
-        Some(ref buyer) => buyer,
-        None => return Ok(no_discount),
-    };
-    let customer = match buyer.customer {
-        Some(ref customer) => customer,
-        None => return Ok(no_discount),
-    };
-    let vip_metafield = match customer.metafield {
-        Some(ref metafield) => metafield,
-        None => return Ok(no_discount),
-    };
+    let Some(vip_metafield) = &input.cart.buyer_identity.as_ref()
+        .and_then(|buyer| buyer.customer.as_ref())
+        .and_then(|customer| customer.metafield.as_ref()) else { return Ok(no_discount) };
     if vip_metafield.value != "true" {
         return Ok(no_discount);
     }
@@ -83,7 +44,7 @@ fn function(input: input::ResponseData) -> Result<output::FunctionResult, Box<dy
             output::Discount {
                 value: output::Value {
                     percentage: Some(output::Percentage {
-                        value: config.discount_percentage,
+                        value: config.discount_percentage.to_string(),
                     }),
                     fixed_amount: None,
                 },
@@ -97,6 +58,6 @@ fn function(input: input::ResponseData) -> Result<output::FunctionResult, Box<dy
                 conditions: None,
             },
         ],
-        discount_application_strategy: output::DiscountApplicationStrategy::Maximum,
+        discount_application_strategy: output::DiscountApplicationStrategy::MAXIMUM,
     })
 }
