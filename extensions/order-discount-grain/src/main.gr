@@ -1,0 +1,22 @@
+import File from "sys/file"
+import Result from "result"
+import String from "string"
+import List from "list"
+import Json from "./json"
+
+let rec readInput = (input: String) => {
+    let (partialInput, bytesRead) = Result.unwrap(File.fdRead(File.stdin, 1024))
+    let mut result = String.concat(input, partialInput)
+    if (bytesRead == 1024) {
+        readInput(result)
+    } else {
+        result
+    }    
+}
+
+let inputStr = readInput("")
+let input = Result.unwrap(Json.parse(inputStr))
+
+// let discountNode = List.find((name, json) => name == "discountNode", input);
+
+print(input)

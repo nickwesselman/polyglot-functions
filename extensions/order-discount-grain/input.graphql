@@ -1,0 +1,7 @@
+query Input {
+  discountNode {
+    metafield(namespace: "order-discount-grain", key: "function-configuration") {
+      value
+    }
+  }
+}

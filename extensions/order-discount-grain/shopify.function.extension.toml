@@ -1,0 +1,10 @@
+name = "order-discount-grain"
+type = "order_discounts"
+api_version = "2022-07"
+
+[build]
+command = "echo 'build the wasm'"
+
+[ui.paths]
+create = "/"
+details = "/"
