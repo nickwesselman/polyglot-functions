@@ -1,7 +1,16 @@
 query Input {
   discountNode {
-    metafield(namespace: "order-discount-grain", key: "function-configuration") {
+    metafield(namespace: "app-polyglot-functions", key: "function-config") {
       value
+    }
+  }
+  cart {
+    buyerIdentity {
+      customer {
+        metafield(namespace: "app-polyglot-functions", key: "vip") {
+          value
+        }
+      }
     }
   }
 }

@@ -1,5 +1,6 @@
 import File from "sys/file"
 import Result from "result"
+import Option from "option"
 import String from "string"
 import List from "list"
 import Json from "./json"
@@ -17,6 +18,101 @@ let rec readInput = (input: String) => {
 let inputStr = readInput("")
 let input = Result.unwrap(Json.parse(inputStr))
 
-// let discountNode = List.find((name, json) => name == "discountNode", input);
+let jsonProperty = (name, json) => {
+    match (json) {
+        Json.JSONObject(list) => {
+            let entry = List.find((entryTest) => {
+                let (entryTestName, _) = entryTest
+                entryTestName == name
+            }, list)
+            Option.map(entry => {
+                let (_, entryJson) = entry
+                entryJson
+            }, entry)
+        },
+        _ => {
+            fail("Unexpected input")
+        }
+    }
+}
 
-print(input)
+let discountPercentage = (json) => {
+    let value = match(jsonProperty("discountNode", json)) {
+        Some(discountNode) => match(jsonProperty("metafield", discountNode)) {
+            Some(metafield) => match(jsonProperty("value", metafield)) {
+                Some(valueJson) => match (valueJson) {
+                    Json.JSONString(string) => string,
+                    _ => "{}"
+                },
+                None => "{}"
+            },
+            None => "{}"
+        },
+        None => "{}"
+    }
+
+    let configuration = Result.unwrap(Json.parse(value))
+    match (jsonProperty("discountPercentage", configuration)) {
+        Some(percentageJson) => match (percentageJson) {
+            Json.JSONNumber(number) => number,
+            _ => 0
+        },
+        None => 0
+    }
+}
+
+let isVip = (json) => {   
+    match (jsonProperty("cart", json)) {
+        Some(cart) => match(jsonProperty("buyerIdentity", cart)) {
+            Some(buyerIdentity) => match (jsonProperty("customer", buyerIdentity)) {
+                Some(customer) => match (jsonProperty("metafield", customer)) {
+                    Some(metafield) => match (jsonProperty("value", metafield)) {
+                        Some(value) => match (value) {
+                            Json.JSONString(string) => string == "true",
+                            _ => false
+                        },
+                        None => false
+                    },
+                    None => false
+                },
+                None => false
+            },
+            None => false
+        },
+        None => false
+    }
+}
+
+let discountFunction = (json) => {
+    let noDiscount = Json.JSONObject([
+        ("discounts", Json.JSONArray([])),
+        ("discountApplicationStrategy", Json.JSONString("FIRST"))
+    ])
+
+    if (!isVip(json)) {
+        noDiscount
+    } else {
+        let discountPercentage = discountPercentage(json)
+        Json.JSONObject([
+            ("discounts", Json.JSONArray([
+                Json.JSONObject([
+                    ("value", Json.JSONObject([
+                        ("percentage", Json.JSONObject([
+                            ("value", Json.JSONNumber(discountPercentage))
+                        ]))
+                    ])),
+                    ("targets", Json.JSONObject([
+                        ("orderSubtotal", Json.JSONObject([
+                            ("excludedVariantIds", Json.JSONArray([]))
+                        ]))
+                    ])),
+                    ("message", Json.JSONString("VIP Discount"))
+                ])
+            ])),
+            ("discountApplicationStrategy", Json.JSONString("FIRST"))
+        ])
+    }
+}
+
+let outputJson = discountFunction(input)
+print(Result.unwrap(Json.toStringCompact(outputJson)))
