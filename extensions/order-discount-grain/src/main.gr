@@ -74,35 +74,33 @@ let isVip = (json) => {
 }
 
 let discountFunction = (json) => {
-    let noDiscount = Json.JSONObject([
-        ("discounts", Json.JSONArray([])),
-        ("discountApplicationStrategy", Json.JSONString("FIRST"))
-    ])
-
     if (!isVip(json)) {
-        noDiscount
+        "{
+            \"discounts\": []
+            \"discountApplicationStrategy\": \"FIRST\"
+        }"
     } else {
         let discountPercentage = discountPercentage(json)
-        Json.JSONObject([
-            ("discounts", Json.JSONArray([
-                Json.JSONObject([
-                    ("value", Json.JSONObject([
-                        ("percentage", Json.JSONObject([
-                            ("value", Json.JSONNumber(discountPercentage))
-                        ]))
-                    ])),
-                    ("targets", Json.JSONObject([
-                        ("orderSubtotal", Json.JSONObject([
-                            ("excludedVariantIds", Json.JSONArray([]))
-                        ]))
-                    ])),
-                    ("message", Json.JSONString("VIP Discount"))
-                ])
-            ])),
-            ("discountApplicationStrategy", Json.JSONString("FIRST"))
-        ])
+        "{
+            \"discounts\": [
+                {
+                    \"value\": {
+                        \"percentage\": {
+                            \"value\":" ++ toString(discountPercentage) ++ "
+                        }
+                    },
+                    \"targets\": {
+                        \"orderSubtotal\": {
+                            \"excludedVariantIds\": []
+                        }
+                    },
+                    \"message\": \"VIP Discount\"
+                }
+            ],
+            \"discountApplicationStrategy\": \"FIRST\"
+        }"
     }
 }
 
 let outputJson = discountFunction(input)
-print(Result.unwrap(Json.toStringCompact(outputJson)))
+print(outputJson)
