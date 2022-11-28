@@ -1,0 +1,106 @@
+import File from "sys/file"
+import Result from "result"
+import Option from "option"
+import String from "string"
+import List from "list"
+import Json from "./json"
+
+let rec readInput = (input: String) => {
+    let (partialInput, bytesRead) = Result.unwrap(File.fdRead(File.stdin, 1024))
+    let mut result = String.concat(input, partialInput)
+    if (bytesRead == 1024) {
+        readInput(result)
+    } else {
+        result
+    }    
+}
+
+let inputStr = readInput("")
+let input = Result.toOption(Json.parse(inputStr))
+
+let jsonProperty = (name, json) => {
+    match (json) {
+        Json.JSONObject(list) => {
+            let entry = List.find((entryTest) => {
+                let (entryTestName, _) = entryTest
+                entryTestName == name
+            }, list)
+            Option.map(entry => {
+                let (_, entryJson) = entry
+                entryJson
+            }, entry)
+        },
+        _ => {
+            fail("Unexpected input")
+        }
+    }
+}
+
+/* A little custom operator magic from Grain's @ospencer to clean up JSON navigation. */
+let property = field => json => jsonProperty(field, json)
+let (|>) = (option, transform) => Option.flatMap(transform, option)
+
+let discountPercentage = (json) => {
+    let valueJson = json |> property("discountNode") |> property("metafield") |> property("value")
+
+    let value = match(valueJson) {
+        Some(valueJson) => match (valueJson) {
+            Json.JSONString(string) => string,
+            _ => "{}"
+        },
+        None => "{}"
+    }
+
+    let configuration = Result.toOption(Json.parse(value))
+    let percentageJson = configuration |> property("discountPercentage")
+    match (percentageJson) {
+        Some(percentageJson) => match (percentageJson) {
+            Json.JSONNumber(number) => number,
+            _ => 0
+        },
+        None => 0
+    }
+}
+
+let isVip = (json) => {   
+    let valueJson = json |> property("cart") |> property("buyerIdentity") |> property("customer") |> property("metafield") |> property("value")
+    match (valueJson) {
+        Some(value) => match (value) {
+            Json.JSONString(string) => string == "true",
+            _ => false
+        },
+        None => false
+    }
+}
+
+let discountFunction = (json) => {
+    if (!isVip(json)) {
+        "{
+            \"discounts\": []
+            \"discountApplicationStrategy\": \"FIRST\"
+        }"
+    } else {
+        let discountPercentage = discountPercentage(json)
+        "{
+            \"discounts\": [
+                {
+                    \"value\": {
+                        \"percentage\": {
+                            \"value\":" ++ toString(discountPercentage) ++ "
+                        }
+                    },
+                    \"targets\": {
+                        \"orderSubtotal\": {
+                            \"excludedVariantIds\": []
+                        }
+                    },
+                    \"message\": \"VIP Discount\"
+                }
+            ],
+            \"discountApplicationStrategy\": \"FIRST\"
+        }"
+    }
+}
+
+let outputJson = discountFunction(input)
+print(outputJson)
