@@ -16,7 +16,7 @@ let rec readInput = (input: String) => {
 }
 
 let inputStr = readInput("")
-let input = Result.unwrap(Json.parse(inputStr))
+let input = Result.toOption(Json.parse(inputStr))
 
 let jsonProperty = (name, json) => {
     match (json) {
@@ -36,23 +36,24 @@ let jsonProperty = (name, json) => {
     }
 }
 
+/* A little custom operator magic from Grain's @ospencer to clean up JSON navigation. */
+let property = field => json => jsonProperty(field, json)
+let (|>) = (option, transform) => Option.flatMap(transform, option)
+
 let discountPercentage = (json) => {
-    let value = match(jsonProperty("discountNode", json)) {
-        Some(discountNode) => match(jsonProperty("metafield", discountNode)) {
-            Some(metafield) => match(jsonProperty("value", metafield)) {
-                Some(valueJson) => match (valueJson) {
-                    Json.JSONString(string) => string,
-                    _ => "{}"
-                },
-                None => "{}"
-            },
-            None => "{}"
+    let valueJson = json |> property("discountNode") |> property("metafield") |> property("value")
+
+    let value = match(valueJson) {
+        Some(valueJson) => match (valueJson) {
+            Json.JSONString(string) => string,
+            _ => "{}"
         },
         None => "{}"
     }
 
-    let configuration = Result.unwrap(Json.parse(value))
-    match (jsonProperty("discountPercentage", configuration)) {
+    let configuration = Result.toOption(Json.parse(value))
+    let percentageJson = configuration |> property("discountPercentage")
+    match (percentageJson) {
         Some(percentageJson) => match (percentageJson) {
             Json.JSONNumber(number) => number,
             _ => 0
@@ -62,22 +63,11 @@ let discountPercentage = (json) => {
 }
 
 let isVip = (json) => {   
-    match (jsonProperty("cart", json)) {
-        Some(cart) => match(jsonProperty("buyerIdentity", cart)) {
-            Some(buyerIdentity) => match (jsonProperty("customer", buyerIdentity)) {
-                Some(customer) => match (jsonProperty("metafield", customer)) {
-                    Some(metafield) => match (jsonProperty("value", metafield)) {
-                        Some(value) => match (value) {
-                            Json.JSONString(string) => string == "true",
-                            _ => false
-                        },
-                        None => false
-                    },
-                    None => false
-                },
-                None => false
-            },
-            None => false
+    let valueJson = json |> property("cart") |> property("buyerIdentity") |> property("customer") |> property("metafield") |> property("value")
+    match (valueJson) {
+        Some(value) => match (value) {
+            Json.JSONString(string) => string == "true",
+            _ => false
         },
         None => false
     }
