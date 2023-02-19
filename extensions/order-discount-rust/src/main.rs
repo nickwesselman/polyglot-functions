@@ -7,6 +7,7 @@ generate_types!(query_path = "./input.graphql", schema_path = "./schema.graphql"
 #[derive(Serialize, Deserialize, Default, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct Configuration {
+    qualifying_product_total: f64,
     discount_percentage: f64,
 }
 
@@ -31,14 +32,34 @@ fn function(input: input::ResponseData) -> Result<output::FunctionResult> {
         discounts: vec![],
         discount_application_strategy: output::DiscountApplicationStrategy::FIRST,
     };
+    let config = input.configuration();
+
     let Some(vip_metafield) = &input.cart.buyer_identity.as_ref()
         .and_then(|buyer| buyer.customer.as_ref())
-        .and_then(|customer| customer.metafield.as_ref()) else { return Ok(no_discount) };
+        .and_then(|customer| customer.metafield.as_ref())
+    else {
+        return Ok(no_discount)
+    };
+
     if vip_metafield.value != "true" {
         return Ok(no_discount);
     }
 
-    let config = input.configuration();
+    let Some(qualifying_products_total) = &input.cart.lines.iter()
+        .filter(|line| match &line.merchandise {
+            input::InputCartLinesMerchandise::ProductVariant(variant) => variant.product.is_qualifying,
+            input::InputCartLinesMerchandise::CustomProduct => false
+        })
+        .filter_map(|line| line.cost.total_amount.amount.parse::<f64>().ok())
+        .reduce(|acc, amount| acc + amount)
+    else {
+        return Ok(no_discount);
+    };
+
+    if qualifying_products_total < &config.qualifying_product_total {
+        return Ok(no_discount);
+    }
+
     Ok(output::FunctionResult {
         discounts: vec![
             output::Discount {
