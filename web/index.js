@@ -252,6 +252,28 @@ export async function createServer(
     res.send(data.body);
   };
 
+  if (!isProd) {
+    app.post("/api/graphiql", async(req, res) => {
+      const session = await Shopify.Utils.loadCurrentSession(
+        req,
+        res,
+        app.get("use-online-tokens")
+      );
+      console.log(`Session for gql is ${JSON.stringify(session, null, 2)}`);
+
+      const client = new Shopify.Clients.Graphql(
+        session?.shop,
+        session?.accessToken
+      );
+
+      console.log(JSON.stringify(req.body, null, 2));q
+      const data = await client.query({
+        data: req.body
+      });
+      res.send(data.body);
+    });
+  }
+
   app.post("/api/discounts/code", async (req, res) => {
     await runDiscountMutation(req, res, CREATE_CODE_MUTATION);
   });
