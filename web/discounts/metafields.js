@@ -4,15 +4,18 @@ import createMetafieldDefinition from "./createMetafieldDefinition.graphql";
 export const MetafieldDefinitions = {
   customerLevel: {
     name: "VIP Customer",
-    namespace: "app-polyglot-functions",
+    namespace: "$app:polyglot-functions",
     key: "vip",
     description: "Is the customer a VIP?",
     type: "boolean",
     ownerType: "CUSTOMER",
+    access: {
+      "admin": "MERCHANT_READ_WRITE"
+    }
   },
   functionConfiguration: {
     name: "Function Configuration",
-    namespace: "app-polyglot-functions",
+    namespace: "$app:polyglot-functions",
     key: "function-configuration",
     description: "Configuration for the function",
     type: "json",
