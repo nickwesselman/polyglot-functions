@@ -1,4 +1,4 @@
 export default {
-    namespace: 'app-polyglot-functions',
+    namespace: '$app:polyglot-functions',
     key: 'function-config'
 }

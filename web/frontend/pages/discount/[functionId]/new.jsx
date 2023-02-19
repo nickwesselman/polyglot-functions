@@ -76,7 +76,9 @@ export default function DiscountNew() {
       startDate: useField(todaysDate),
       endDate: useField(null),
       configuration: {
-        discountPercentage: useField("0"),
+        discountPercentage: useField("10"),
+        qualifyingProductsTotal: useField("25"),
+        qualifyingProductsTag: useField("vip")
       },
     },
     onSubmit: async (form) => {
@@ -92,6 +94,8 @@ export default function DiscountNew() {
             type: 'json',
             value: JSON.stringify({
               discountPercentage: parseFloat(form.configuration.discountPercentage),
+              qualifyingProductsTotal: parseFloat(form.configuration.qualifyingProductsTotal),
+              qualifyingProductsTags: [form.configuration.qualifyingProductsTag],
             }),
           },
         ],
@@ -186,6 +190,14 @@ export default function DiscountNew() {
             <Card title="VIP">
               <Card.Section>
                 <Stack>
+                  <TextField
+                    label="VIP Product Tag"
+                    {...configuration.qualifyingProductsTag}
+                  />
+                  <TextField
+                    label="Minimum purchase total"
+                    {...configuration.qualifyingProductsTotal}
+                  />
                   <TextField
                     label="Discount percentage"
                     {...configuration.discountPercentage}
