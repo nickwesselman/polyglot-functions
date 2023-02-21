@@ -7,5 +7,5 @@ command = "bash build.sh"
 path = "build/release.wasm"
 
 [ui.paths]
-create = "/discount/01GE2WRX1BWC5P3VP37AVXY5BW/new"
-details = "/discount/01GE2WRX1BWC5P3VP37AVXY5BW/:id"
+create = "/discount/:functionId/new"
+details = "/discount/:functionId/:id"

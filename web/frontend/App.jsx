@@ -18,11 +18,11 @@ export default function App() {
     <PolarisProvider>
       <BrowserRouter>
         <AppBridgeProvider>
-          <DiscountProvider>
-            <QueryProvider>
+          <QueryProvider>
+            <DiscountProvider>
               <Routes pages={pages} />
-            </QueryProvider>
-          </DiscountProvider>
+            </DiscountProvider>
+          </QueryProvider>
         </AppBridgeProvider>
       </BrowserRouter>
     </PolarisProvider>

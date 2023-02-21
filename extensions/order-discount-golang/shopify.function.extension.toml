@@ -7,5 +7,5 @@ command = "bash build.sh"
 path = "build/order-discount-golang.wasm"
 
 [ui.paths]
-create = "/discount/25530f94-ebba-42cc-ac86-586b7db1c928/new"
-details = "/discount/25530f94-ebba-42cc-ac86-586b7db1c928/:id"
+create = "/discount/:functionId/new"
+details = "/discount/:functionId/:id"
