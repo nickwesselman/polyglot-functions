@@ -230,6 +230,26 @@ export async function createServer(
   // attribute, as a result of the express.json() middleware
   app.use(express.json());
 
+  if (!isProd) {
+    app.post("/api/graphiql", async(req, res) => {
+      const session = await Shopify.Utils.loadCurrentSession(
+        req,
+        res,
+        app.get("use-online-tokens")
+      );
+
+      const client = new Shopify.Clients.Graphql(
+        session?.shop,
+        session?.accessToken
+      );
+
+      const data = await client.query({
+        data: req.body
+      });
+      res.send(data.body);
+    });
+  }
+
   const runDiscountMutation = async (req, res, mutation) => {
     const session = await Shopify.Utils.loadCurrentSession(
       req,
@@ -251,26 +271,6 @@ export async function createServer(
 
     res.send(data.body);
   };
-
-  if (!isProd) {
-    app.post("/api/graphiql", async(req, res) => {
-      const session = await Shopify.Utils.loadCurrentSession(
-        req,
-        res,
-        app.get("use-online-tokens")
-      );
-
-      const client = new Shopify.Clients.Graphql(
-        session?.shop,
-        session?.accessToken
-      );
-
-      const data = await client.query({
-        data: req.body
-      });
-      res.send(data.body);
-    });
-  }
 
   app.post("/api/discounts/code", async (req, res) => {
     await runDiscountMutation(req, res, CREATE_CODE_MUTATION);
