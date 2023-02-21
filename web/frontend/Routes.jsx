@@ -63,6 +63,7 @@ function useRoutes(pages) {
         component: pages[key].default,
       };
     })
+    .filter((route) => import.meta.env?.DEV || route.path.indexOf('graphiql') == -1)
     .filter((route) => route.component);
 
   return routes;
