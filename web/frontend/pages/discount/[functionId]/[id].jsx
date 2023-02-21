@@ -86,8 +86,8 @@ export default function DiscountNew() {
       endDate: useField(discount?.endsAt || null),
       configuration: {
         discountPercentage: useField(discount?.configuration?.discountPercentage || "0"),
-        qualifyingProductsTotal: useField(discount?.configuration?.qualifyingProductsTotal || "25"),
-        qualifyingProductsTag: useField(discount?.configuration?.qualifyingProductsTags?.[0] || "vip"),
+        qualifyingProductTotal: useField(discount?.configuration?.qualifyingProductTotal || "25"),
+        qualifyingProductTag: useField(discount?.configuration?.qualifyingProductTags?.[0] || "vip"),
       },
     },
     onSubmit: async (form) => {
@@ -103,8 +103,8 @@ export default function DiscountNew() {
             type: "json",
             value: JSON.stringify({
               discountPercentage: parseFloat(form.configuration.discountPercentage),
-              qualifyingProductsTotal: parseFloat(form.configuration.qualifyingProductsTotal),
-              qualifyingProductsTags: [form.configuration.qualifyingProductsTag],
+              qualifyingProductTotal: parseFloat(form.configuration.qualifyingProductTotal),
+              qualifyingProductTags: [form.configuration.qualifyingProductTag],
             }),
           },
         ],
@@ -224,11 +224,11 @@ export default function DiscountNew() {
                   <Stack>
                     <TextField
                       label="VIP Product Tag"
-                      {...configuration.qualifyingProductsTag}
+                      {...configuration.qualifyingProductTag}
                     />
                     <TextField
                       label="Minimum purchase total"
-                      {...configuration.qualifyingProductsTotal}
+                      {...configuration.qualifyingProductTotal}
                     />
                     <TextField
                       label="Discount percentage"

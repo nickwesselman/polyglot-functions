@@ -24,7 +24,7 @@ query Input($qualifyingProductTags: [String!]!) {
     }
   }
   discountNode {
-    metafield(namespace: "$app:polyglot-functions", key: "function-config") {
+    metafield(namespace: "$app:polyglot-functions", key: "function-configuration") {
       value
     }
   }
