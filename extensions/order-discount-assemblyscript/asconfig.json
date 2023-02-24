@@ -19,6 +19,7 @@
     }
   },
   "options": {
-    "bindings": "esm"
+    "bindings": "esm",
+    "transform": ["json-as/transform"]
   }
 }

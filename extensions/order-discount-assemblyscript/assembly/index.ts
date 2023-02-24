@@ -2,9 +2,8 @@ import { FunctionInput, FunctionResult, Configuration } from "./api";
 import { JSON } from "json-as";
 import { Console } from "./console";
 
-//const input = FunctionInput.parse(Console.readAll()!);
 const input = JSON.parse<FunctionInput>(Console.readAll()!);
-const configuration = JSON.parse<Configuration>(input.discountNode!.metafield!.value!);
+const configuration = JSON.parse<Configuration>(input.discountNode!.metafield!.value);
 
 let result: FunctionResult;
 

@@ -1,36 +1,47 @@
+import {JSON} from "json-as";
+
 /**
  * Input Types
  * These represent what's needed for our input query.
  **/
+
+@JSON
 export class FunctionInput {
   cart: Cart | null = null;
   discountNode: DiscountNode | null = null;
 }
 
+@JSON
 export class Cart {
-  buyerIdentity: BuyerIdentity | null
+  buyerIdentity: BuyerIdentity | null = null;
 }
 
+@JSON
 export class BuyerIdentity {
   customer: Customer | null = null;
 }
 
+@JSON
 export class DiscountNode {
   metafield: Metafield | null = null;
 }
 
+@JSON
 export class Customer {
   metafield: Metafield | null = null;
 }
 
+@JSON
 export class Metafield {
-  value: string | null = null;
+  value: string;
 }
 
 /**
  * Configuration Types
  * These represent the JSON metafield where we are storing our configuration.
  */
+
+@JSON
 export class Configuration {
   discountPercentage: f64 = 0.0;
 }
@@ -40,29 +51,35 @@ export class Configuration {
  * These just represent the part of the schema needed for this function.
  **/
 
+@JSON
 export class PercentageValue {
     value: f64 = 0;
 }
 
+@JSON
 export class PercentageValueType {
     percentage: PercentageValue = new PercentageValue();
 }
 
+@JSON
 export class OrderSubtotalTarget {
     orderSubtotal: OrderSubtotalTargetType = new OrderSubtotalTargetType();
 }
 
+@JSON
 export class OrderSubtotalTargetType {
     excludedVariantIds: string[] = [];
 }
 
+@JSON
 export class OrderDiscount {
-    message: string | null = null;
+    message: string;
     targets: OrderSubtotalTarget[] = [];
     value: PercentageValueType | null = null;
 }
 
+@JSON
 export class FunctionResult {
-    discountApplicationStrategy: string | null = null;
+    discountApplicationStrategy: string;
     discounts: OrderDiscount[] = [];
 }
