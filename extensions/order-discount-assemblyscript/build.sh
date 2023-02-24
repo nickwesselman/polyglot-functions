@@ -1,2 +1,2 @@
-npm install
-npm run asbuild:release
+yarn
+yarn asbuild:release

@@ -9,6 +9,28 @@ export class FunctionInput {
 
 export class Cart {
   buyerIdentity: BuyerIdentity | null
+  lines: CartLine[]
+}
+
+export class CartLine {
+  merchandise: CartLineMerchandise
+  cost: CartLineCost
+}
+
+export class CartLineMerchandise {
+  product: CartLineMerchandiseProduct
+}
+
+export class CartLineMerchandiseProduct {
+  isQualifying: bool
+}
+
+export class CartLineCost {
+  totalAmount: CartLineCostTotal
+}
+
+export class CartLineCostTotal {
+  amount: string
 }
 
 export class BuyerIdentity {
@@ -33,6 +55,8 @@ export class Metafield {
  */
 export class Configuration {
   discountPercentage: f64 = 0.0;
+  qualifyingProductTotal: f64 = 0.0;
+  qualifyingProductTags: string[];
 }
 
 /**
