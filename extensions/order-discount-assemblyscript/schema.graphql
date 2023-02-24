@@ -169,6 +169,8 @@ Represents information about the merchandise in the cart.
 type CartLine {
   """
   Retrieve a cart line attribute by key.
+
+  Cart line attributes are also known as line item properties in Liquid.
   """
   attribute(
     """
@@ -255,7 +257,7 @@ type Country {
 
 """
 The code designating a country/region, which generally follows ISO 3166-1 alpha-2 guidelines.
-If a territory doesn't have a country code value in the `CountryCode` enum, it might be considered a subdivision
+If a territory doesn't have a country code value in the `CountryCode` enum, then it might be considered a subdivision
 of another country. For example, the territories associated with Spain are represented by the country code `ES`,
 and the territories associated with the United States of America are represented by the country code `US`.
 """
@@ -2328,7 +2330,8 @@ Represents a customer with the shop.
 """
 type Customer implements HasMetafields {
   """
-  The total amount of money spent by the customer.
+  The total amount of money spent by the customer. Converted from the shop's
+  currency to the currency of the cart using a market rate.
   """
   amountSpent: MoneyV2!
 
@@ -2531,11 +2534,10 @@ interface HasMetafields {
 }
 
 """
-Represents a unique identifier that is Base64 obfuscated. It is often used to
-refetch an object or as key for a cache. The ID type appears in a JSON response
-as a String; however, it is not intended to be human-readable. When expected as
-an input type, any string (such as `"VXNlci0xMA=="`) or integer (such as `4`)
-input value will be accepted as an ID.
+Represents a unique identifier, often used to refetch an object.
+The ID type appears in a JSON response as a String, but it is not intended to be human-readable.
+
+Example value: `"gid://shopify/Product/10079785100"`
 """
 scalar ID
 
@@ -2561,7 +2563,7 @@ type Input {
   """
   The conversion rate between the shop's currency and the currency of the cart.
   """
-  presentmentCurrencyRate: Decimal
+  presentmentCurrencyRate: Decimal!
 }
 
 """
@@ -2939,7 +2941,7 @@ enum LanguageCode {
   MG
 
   """
-  Maori.
+  Māori.
   """
   MI
 

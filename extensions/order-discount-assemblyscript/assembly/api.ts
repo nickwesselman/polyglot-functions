@@ -13,7 +13,34 @@ export class FunctionInput {
 
 @JSON
 export class Cart {
-  buyerIdentity: BuyerIdentity | null = null;
+  buyerIdentity: BuyerIdentity | null
+  lines: CartLine[]
+}
+
+@JSON
+export class CartLine {
+  merchandise: CartLineMerchandise
+  cost: CartLineCost
+}
+
+@JSON
+export class CartLineMerchandise {
+  product: CartLineMerchandiseProduct
+}
+
+@JSON
+export class CartLineMerchandiseProduct {
+  isQualifying: bool
+}
+
+@JSON
+export class CartLineCost {
+  totalAmount: CartLineCostTotal
+}
+
+@JSON
+export class CartLineCostTotal {
+  amount: string
 }
 
 @JSON
@@ -44,6 +71,8 @@ export class Metafield {
 @JSON
 export class Configuration {
   discountPercentage: f64 = 0.0;
+  qualifyingProductTotal: f64 = 0.0;
+  qualifyingProductTags: string[];
 }
 
 /**

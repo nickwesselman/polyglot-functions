@@ -2,25 +2,30 @@ import { FunctionInput, FunctionResult, Configuration } from "./api";
 import { JSON } from "json-as";
 import { Console } from "./console";
 
-const input = JSON.parse<FunctionInput>(Console.readAll()!);
-const configuration = JSON.parse<Configuration>(input.discountNode!.metafield!.value);
+let calculateDiscount = (input: FunctionInput) : FunctionResult => {
+  let noDiscount: FunctionResult = {
+    discountApplicationStrategy: "MAXIMUM",
+    discounts: []
+  };
 
-let result: FunctionResult;
-
-if (input.cart!.buyerIdentity == null ||
+  if (input.cart!.buyerIdentity == null ||
     input.cart!.buyerIdentity!.customer == null ||
     input.cart!.buyerIdentity!.customer!.metafield == null ||
     input.cart!.buyerIdentity!.customer!.metafield!.value != "true") {
   
-  // no discount
-  result = {
-    discountApplicationStrategy: "MAXIMUM",
-    discounts: []
+    return noDiscount;
   }
 
-} else {
+  const configuration = JSON.parse<Configuration>(input.discountNode!.metafield!.value);
+  let qualifyingProductTotal = input.cart!.lines
+    .filter((value) => value.merchandise.product.isQualifying)
+    .reduce((previousValue, currentValue) => previousValue + f64.parse(currentValue.cost.totalAmount.amount), 0.0);
 
-  result = {
+  if (qualifyingProductTotal < configuration.qualifyingProductTotal) {
+    return noDiscount;
+  }
+
+  return {
     discountApplicationStrategy: "MAXIMUM",
     discounts: [
       {
@@ -40,7 +45,8 @@ if (input.cart!.buyerIdentity == null ||
       }
     ]
   }
-
 }
 
+const input = JSON.parse<FunctionInput>(Console.readAll()!);
+const result = calculateDiscount(input);
 Console.log(JSON.stringify(result));
