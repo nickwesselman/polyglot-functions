@@ -1,8 +1,10 @@
 import { FunctionInput, FunctionResult, Configuration } from "./api";
+import { JSON } from "json-as";
 import { Console } from "./console";
 
-const input = FunctionInput.parse(Console.readAll()!);
-const configuration = Configuration.parse(input.discountNode!.metafield!.value!);
+//const input = FunctionInput.parse(Console.readAll()!);
+const input = JSON.parse<FunctionInput>(Console.readAll()!);
+const configuration = JSON.parse<Configuration>(input.discountNode!.metafield!.value!);
 
 let result: FunctionResult;
 
@@ -42,4 +44,4 @@ if (input.cart!.buyerIdentity == null ||
 
 }
 
-Console.log(result.marshal());
+Console.log(JSON.stringify(result));
