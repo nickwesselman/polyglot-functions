@@ -2533,14 +2533,14 @@ interface HasMetafields {
   ): Metafield
 }
 
-# Removed due to https://github.com/Khan/genqlient/issues/224
+# https://github.com/Khan/genqlient/issues/224
 #"""
 #Represents a unique identifier, often used to refetch an object.
 #The ID type appears in a JSON response as a String, but it is not intended to be human-readable.
 #
 #Example value: `"gid://shopify/Product/10079785100"`
 #"""
-# scalar ID
+#scalar ID
 
 """
 The input object for the function.
