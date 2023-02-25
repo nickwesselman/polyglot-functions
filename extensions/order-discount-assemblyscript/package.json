@@ -21,7 +21,7 @@
     "asbuild": "npm run asbuild:debug && npm run asbuild:release",
     "test": "node tests",
     "start": "npx serve .",
-    "generate": "graphql-codegen --config codegen.yml"
+    "validate-function-output": "node ../../validate-function-output.js"
   },
   "dependencies": {
     "json-as": "^0.5.23",
