@@ -9,11 +9,15 @@
     "dev": "shopify app dev",
     "info": "shopify app info",
     "generate": "shopify app generate",
-    "deploy": "shopify app deploy"
+    "deploy": "shopify app deploy",
+    "validate-function-output": "node validate-function-output.js"
   },
   "dependencies": {
     "@shopify/app": "^3.43.0",
     "@shopify/cli": "^3.43.0"
   },
-  "author": "nickwesselman"
+  "author": "nickwesselman",
+  "devDependencies": {
+    "graphql": "^16.6.0"
+  }
 }
