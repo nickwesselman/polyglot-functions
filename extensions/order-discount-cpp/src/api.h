@@ -128,7 +128,7 @@ struct Discount
     Value value;
     std::vector<Target> targets;
     std::string message;
-    JS_OBJ(value, message, targets, conditions);
+    JS_OBJ(value, message, targets);
 };
 
 JS_ENUM(DiscountApplicationStrategy, FIRST, MAXIMUM);
