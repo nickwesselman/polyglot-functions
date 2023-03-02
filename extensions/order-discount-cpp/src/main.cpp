@@ -1,39 +1,77 @@
 #include <iostream>
 #include <iterator>
+#include <numeric>
 #include <string>
 #include "json_struct.h"
 #include "api.h"
 
-FunctionResult function(FunctionInput input) {
-    FunctionResult result = {
-        std::vector<Discount> {
-            // Discount
+struct Configuration
+{
+    float discountPercentage;
+    float qualifyingProductTotal;
+    JS_OBJ(discountPercentage, qualifyingProductTotal);
+};
+
+FunctionResult function(FunctionInput input)
+{
+    FunctionResult result;
+    result.discountApplicationStrategy = DiscountApplicationStrategy::MAXIMUM;
+
+    if (!input.cart.buyerIdentity.has_value() ||
+        !input.cart.buyerIdentity.value().customer.has_value() ||
+        !input.cart.buyerIdentity.value().customer.value().metafield.has_value() ||
+        !input.cart.buyerIdentity.value().customer.value().metafield.value().value.has_value() ||
+        input.cart.buyerIdentity.value().customer.value().metafield.value().value.value() != "true")
+    {
+        return result;
+    }
+
+    Configuration config = input.config<Configuration>();
+
+    // filter only qualifying products
+    std::vector<CartLine> qualifyingLines;
+    auto filter = [](CartLine line) { return line.merchandise.product.isQualifying; };
+    std::copy_if(input.cart.lines.begin(), input.cart.lines.end(), std::back_inserter(qualifyingLines), filter);
+
+    // get total for qualifying products
+    auto accumulate = [](float total, CartLine line)
+    {
+        return std::stof(line.cost.totalAmount.amount) + total;
+    };
+    float total = std::accumulate(qualifyingLines.begin(), qualifyingLines.end(), 0.0f, accumulate);
+    
+    if (total < config.qualifyingProductTotal)
+    {
+        return result;
+    }
+
+    result.discounts = std::vector<Discount> {
+        // Discount
+        {
+            // Value
             {
-                // Value
+                std::optional<Percentage> {
+                    // Percentage
+                    { config.discountPercentage }
+                }
+            },
+            std::vector<Target> {
+                // Target
                 {
-                    std::nullopt,
-                    std::optional<Percentage> {
-                        // Percentage
-                        { 10.0 }
+                    std::optional<OrderSubtotalTarget> {
+                        // OrderSubtotalTarget
+                        {}
                     }
-                },
-                std::vector<Target> {
-                    // Target
-                    {
-                        std::optional<ProductVariant> {
-                            // ProductVariant
-                            { "gid://test/123", std::nullopt }
-                        }
-                    }
-                },
-                "Hello world"
-            }
+                }
+            },
+            "Hello world"
         }
     };
     return result;
 }
 
-int main(void) {
+int main(void)
+{
     // read input from stdin
     std::istreambuf_iterator<char> begin(std::cin), end;
     std::string inputStr(begin, end);
