@@ -1,0 +1,1 @@
+grain compile src/main.gr -o build/main.wasm

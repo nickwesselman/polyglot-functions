@@ -2,8 +2,13 @@ import File from "sys/file"
 import Result from "result"
 import Option from "option"
 import String from "string"
+import Number from "number"
 import List from "list"
 import Json from "./json"
+
+let log = (logStr: String) => {
+    File.fdWrite(File.stderr, logStr ++ "\n")
+}
 
 let rec readInput = (input: String) => {
     let (partialInput, bytesRead) = Result.unwrap(File.fdRead(File.stdin, 1024))
@@ -40,7 +45,9 @@ let jsonProperty = (name, json) => {
 let property = field => json => jsonProperty(field, json)
 let (|>) = (option, transform) => Option.flatMap(transform, option)
 
-let discountPercentage = (json) => {
+record Configuration { discountPercentage: Number, qualifyingProductTotal: Number }
+
+let getConfiguration = (json) => {
     let valueJson = json |> property("discountNode") |> property("metafield") |> property("value")
 
     let value = match(valueJson) {
@@ -51,15 +58,26 @@ let discountPercentage = (json) => {
         None => "{}"
     }
 
-    let configuration = Result.toOption(Json.parse(value))
-    let percentageJson = configuration |> property("discountPercentage")
-    match (percentageJson) {
-        Some(percentageJson) => match (percentageJson) {
-            Json.JSONNumber(number) => number,
-            _ => 0
+    let configurationJson = Result.toOption(Json.parse(value))
+    let percentageJson = configurationJson |> property("discountPercentage")
+    let qualifyingTotalJson = configurationJson |> property("qualifyingProductTotal")
+    {
+        discountPercentage: match (percentageJson) {
+            Some(percentageJson) => match (percentageJson) {
+                Json.JSONNumber(number) => number,
+                _ => 0
+            },
+            None => 0
         },
-        None => 0
+        qualifyingProductTotal: match (qualifyingTotalJson) {
+            Some(qualifyingTotalJson) => match (qualifyingTotalJson) {
+                Json.JSONNumber(number) => number,
+                _ => 0
+            },
+            None => 0
+        }
     }
+
 }
 
 let isVip = (json) => {   
@@ -73,20 +91,64 @@ let isVip = (json) => {
     }
 }
 
+let getQualifyingTotal = (linesJsonArray) => {
+    let qualifyingLines = List.filter((line => {
+        let isQualifyingJson = Some(line) |> property("merchandise") |> property("product") |> property("isQualifying")
+        match (isQualifyingJson) {
+            Some(value) => match (value) {
+                Json.JSONBoolean(boolean) => boolean,
+                _ => false
+            },
+            None => false
+        }
+    }), linesJsonArray)
+    List.reduce((accum, line) => {
+        let lineTotalJson = Some(line) |> property("cost") |> property("totalAmount") |> property("amount")
+        match (lineTotalJson) {
+            Some(value) => match (value) {
+                Json.JSONString(numberStr) => Result.unwrap(Number.parseFloat(numberStr)),
+                _ => 0
+            },
+            None => 0
+        }
+    }, 0, qualifyingLines)
+}
+
+let cartQualifies = (json, configuration) => {
+    let linesJson = json |> property("cart") |> property("lines")
+    match (linesJson) {
+        Some(value) => match (value) {
+            Json.JSONArray(array) => {
+                let qualifyingTotal = getQualifyingTotal(array)
+                qualifyingTotal >= configuration.qualifyingProductTotal
+            },
+            _ => false
+        },
+        None => false
+    }
+}
+
 let discountFunction = (json) => {
+    let noDiscount = "{
+        \"discounts\": [],
+        \"discountApplicationStrategy\": \"FIRST\"
+    }"
+
+    let configuration = getConfiguration(json);
+
     if (!isVip(json)) {
-        "{
-            \"discounts\": []
-            \"discountApplicationStrategy\": \"FIRST\"
-        }"
+        log("Customer is not a VIP")
+        noDiscount
+    } else if (!cartQualifies(json, configuration)) {
+        log("Qualifying cart item total is unmet")
+        noDiscount
     } else {
-        let discountPercentage = discountPercentage(json)
         "{
             \"discounts\": [
                 {
                     \"value\": {
                         \"percentage\": {
-                            \"value\":" ++ toString(discountPercentage) ++ "
+                            \"value\":" ++ toString(configuration.discountPercentage) ++ "
                         }
                     },
                     \"targets\": {
