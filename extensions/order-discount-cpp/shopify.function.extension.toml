@@ -3,8 +3,13 @@ type = "order_discounts"
 api_version = "2023-01"
 
 [build]
-command = "echo 'build the wasm'"
+command = "bash build.sh"
+path = "build/main.wasm"
 
 [ui.paths]
-create = "/"
-details = "/"
+create = "/discount/:functionId/new"
+details = "/discount/:functionId/:id"
+
+[input.variables]
+namespace = "$app:polyglot-functions"
+key = "function-configuration"
