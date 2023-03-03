@@ -13,8 +13,8 @@
     "validate-function-output": "node validate-function-output.js"
   },
   "dependencies": {
-    "@shopify/app": "^3.43.0",
-    "@shopify/cli": "^3.43.0"
+    "@shopify/app": "^3.44.1",
+    "@shopify/cli": "^3.44.1"
   },
   "author": "nickwesselman",
   "devDependencies": {
