@@ -10,7 +10,8 @@
     "info": "shopify app info",
     "generate": "shopify app generate",
     "deploy": "shopify app deploy",
-    "validate-function-output": "node validate-function-output.js"
+    "validate-function-output": "node validate-function-output.js",
+    "function-runner": "function-runner"
   },
   "dependencies": {
     "@shopify/app": "^0.0.0-nightly-20230307121704",
@@ -20,6 +21,7 @@
   },
   "author": "nickwesselman",
   "devDependencies": {
-    "graphql": "^16.6.0"
+    "graphql": "^16.6.0",
+    "toml": "^3.0.0"
   }
 }
