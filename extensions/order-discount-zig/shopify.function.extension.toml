@@ -1,0 +1,10 @@
+name = "order-discount-zig"
+type = "order_discounts"
+api_version = "2023-01"
+
+[build]
+command = "zig build"
+
+[ui.paths]
+create = "/"
+details = "/"
