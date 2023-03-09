@@ -7,5 +7,9 @@ command = "bash build.sh"
 path = "zig-out/bin/order-discount-zig-optimized.wasm"
 
 [ui.paths]
-create = "/"
-details = "/"
+create = "/discount/:functionId/new"
+details = "/discount/:functionId/:id"
+
+[input.variables]
+namespace = "$app:polyglot-functions"
+key = "function-configuration"
