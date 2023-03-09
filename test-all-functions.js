@@ -29,15 +29,12 @@ const testData = getFunctionModules()
         result: runFunction(module, input)
     }))
     .sort((a, b) => a.result.instructions - b.result.instructions)
-    .map(({module,result}) => {
+    .map(({ module, result }) => {
         return {
             function: module.split(path.sep)[1],
-            "instr (K)": Math.round(result.instructions/1000),
+            "instr (K)": Math.round(result.instructions / 1000),
             "size (KB)": result.size,
         }
     });
-console.table(testData);
 
-//
-//const result = runFunction('extensions/order-discount-javascript/dist/function.wasm', input);
-//console.log(JSON.stringify(result, null, 2));
+console.table(testData);
