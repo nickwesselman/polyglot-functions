@@ -63,7 +63,7 @@ pub const Value = struct {
 };
 
 pub const OrderSubtotalTarget = struct {
-    excludedVariantIds: ?[]const u8
+    excludedVariantIds: [][]const u8
 };
 
 pub const Target = struct {
@@ -72,7 +72,7 @@ pub const Target = struct {
 
 pub const Discount = struct {
     value: Value,
-    targets: []Target,
+    targets: []const Target,
     message: []const u8
 };
 

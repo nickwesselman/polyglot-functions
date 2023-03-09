@@ -3,7 +3,7 @@ const api = @import("./api.zig");
 
 const Configuration = struct {
     discountPercentage: f64 = 0,
-    qualifyingProductTotal: f64= 0
+    qualifyingProductTotal: f64 = 0
 };
 
 pub fn function(input: api.FunctionInput, allocator: std.mem.Allocator) ?api.FunctionResult {
@@ -20,16 +20,52 @@ pub fn function(input: api.FunctionInput, allocator: std.mem.Allocator) ?api.Fun
             };
     
     if (!isVip) {
-        std.debug.print("Not a VIP",.{});
         return noDiscount;
     }
 
-    _ = allocator;
-    //if (input.discountNode.metafield) |metafield| if (metafield.value) |config| {
-        //std.debug.print("All your {d} are belong to us.\n", .{config.discountPercentage});
-    //};
+    var config: Configuration = .{};
+    if (input.discountNode.metafield) |metafield| if (metafield.value) |configStr| {
+        var stream = std.json.TokenStream.init(configStr);
+        config = std.json.parse(Configuration, &stream, .{
+            .allocator = allocator,
+            .ignore_unknown_fields = true
+        }) catch |err| {
+            std.debug.print("Error parsing function config: {!}",.{err});
+            return noDiscount;
+        };
+    };
+    if (config.discountPercentage == 0 or config.qualifyingProductTotal == 0) {
+        return noDiscount;
+    }
+
+    var qualifyingTotal: f64 = 0;
+    for (input.cart.lines) |line| {
+        if (line.merchandise.product.isQualifying) {
+            qualifyingTotal += std.fmt.parseFloat(f64, line.cost.totalAmount.amount) catch 0;
+        }
+    }
+    if (qualifyingTotal < config.qualifyingProductTotal) {
+        return noDiscount;
+    }
+
     return api.FunctionResult {
-        .discounts = &[0]api.Discount {},
+        .discounts = &[1]api.Discount {
+            api.Discount {
+                .value = api.Value {
+                    .percentage = api.Percentage {
+                        .value = config.discountPercentage
+                    }
+                },
+                .targets = &[1]api.Target {
+                    api.Target {
+                        .orderSubtotal = api.OrderSubtotalTarget {
+                            .excludedVariantIds = &[0][]const u8 {}
+                        }
+                    }
+                },
+                .message = "VIP Discount",
+            }
+        },
         .discountApplicationStrategy = "FIRST"
     };
 }
