@@ -3,7 +3,7 @@ type = "order_discounts"
 api_version = "2022-07"
 
 [build]
-command = "grain compile --release --elide-type-info src/main.gr -o build/main.wasm"
+command = "bash build.sh"
 path = "build/main.wasm"
 
 [ui.paths]

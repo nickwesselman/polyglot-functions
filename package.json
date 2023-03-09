@@ -11,7 +11,8 @@
     "generate": "shopify app generate",
     "deploy": "shopify app deploy",
     "validate-function-output": "node validate-function-output.js",
-    "function-runner": "function-runner"
+    "function-runner": "function-runner",
+    "test-all": "node test-all-functions.js"
   },
   "dependencies": {
     "@shopify/app": "^0.0.0-nightly-20230307121704",

@@ -3,8 +3,8 @@ type = "order_discounts"
 api_version = "2023-01"
 
 [build]
-command = "zig build -Drelease-small=true"
-path = "zig-out/bin/order-discount-zig.wasm"
+command = "bash build.sh"
+path = "zig-out/bin/order-discount-zig-optimized.wasm"
 
 [ui.paths]
 create = "/"
