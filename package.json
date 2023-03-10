@@ -15,8 +15,8 @@
     "test-all": "node test-all-functions.js"
   },
   "dependencies": {
-    "@shopify/app": "^0.0.0-nightly-20230307121704",
-    "@shopify/cli": "^0.0.0-nightly-20230307121704",
+    "@shopify/app": "^3.45.0-pre.2",
+    "@shopify/cli": "^3.45.0-pre.2",
     "@shopify/shopify_function": "0.0.3",
     "javy": "0.0.3"
   },
