@@ -7,7 +7,9 @@
     "typegen": "npm exec -- shopify app function typegen",
     "build": "npm exec -- shopify app function build",
     "preview": "npm exec -- shopify app function run",
-    "validate-function-output": "node ../../validate-function-output.js"
+    "function-build": "npm exec -- shopify app function build",
+    "function-preview": "cat ../../inputs/input.json | npm exec -- shopify app function run",
+    "function-validate": "cat ../../inputs/input.json | node ../../validate-function-output.js"
   },
   "codegen": {
     "schema": "schema.graphql",

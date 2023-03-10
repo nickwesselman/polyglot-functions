@@ -10,8 +10,9 @@
     "info": "shopify app info",
     "generate": "shopify app generate",
     "deploy": "shopify app deploy",
-    "validate-function-output": "node validate-function-output.js",
-    "function-runner": "function-runner",
+    "function-build": "npm exec -- shopify app function build --path $INIT_CWD",
+    "function-preview": "cat inputs/input.json | npm exec -- shopify app function run --path $INIT_CWD",
+    "function-validate": "cat inputs/input.json | node validate-function-output.js",
     "test-all": "node test-all-functions.js"
   },
   "dependencies": {
@@ -22,6 +23,7 @@
   },
   "author": "nickwesselman",
   "devDependencies": {
+    "cross-var": "^1.1.0",
     "graphql": "^16.6.0",
     "toml": "^3.0.0"
   }

@@ -16,9 +16,10 @@ const getFunctionModules = () => {
 };
 
 const runFunction = (path, input) => {
-    return JSON.parse(execSync(`npm run function-runner --silent -- -j -f ${path}`, {
+    const result = execSync(`npm exec -- function-runner -j -f ${path}`, {
         input
-    }).toString());
+    }).toString();
+    return JSON.parse(result);
 };
 
 const input = fs.readFileSync('inputs/input.json').toString();

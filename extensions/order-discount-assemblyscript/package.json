@@ -21,7 +21,9 @@
     "asbuild": "npm run asbuild:debug && npm run asbuild:release",
     "test": "node tests",
     "start": "npx serve .",
-    "validate-function-output": "node ../../validate-function-output.js"
+    "function-build": "npm exec -- shopify app function build",
+    "function-preview": "cat ../../inputs/input.json | npm exec -- shopify app function run",
+    "function-validate": "cat ../../inputs/input.json | node ../../validate-function-output.js"
   },
   "dependencies": {
     "json-as": "^0.5.23",
