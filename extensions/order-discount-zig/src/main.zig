@@ -8,7 +8,7 @@ const Configuration = struct {
 
 pub fn function(input: api.FunctionInput, allocator: std.mem.Allocator) ?api.FunctionResult {
     const noDiscount = api.FunctionResult {
-        .discounts = &[0]api.Discount {},
+        .discounts = ([0]api.Discount {})[0..],
         .discountApplicationStrategy = "MAXIMUM"
     };
 
@@ -49,23 +49,23 @@ pub fn function(input: api.FunctionInput, allocator: std.mem.Allocator) ?api.Fun
     }
 
     return api.FunctionResult {
-        .discounts = &[1]api.Discount {
+        .discounts = ([1]api.Discount {
             api.Discount {
                 .value = api.Value {
                     .percentage = api.Percentage {
                         .value = config.discountPercentage
                     }
                 },
-                .targets = &[1]api.Target {
+                .targets = ([1]api.Target {
                     api.Target {
                         .orderSubtotal = api.OrderSubtotalTarget {
-                            .excludedVariantIds = &[0][]const u8 {}
+                            .excludedVariantIds = ([0][]const u8 {})[0..]
                         }
                     }
-                },
+                })[0..],
                 .message = "VIP Discount",
             }
-        },
+        })[0..],
         .discountApplicationStrategy = "FIRST"
     };
 }
