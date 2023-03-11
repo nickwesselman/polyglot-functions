@@ -20,10 +20,7 @@
     "asbuild:release": "asc assembly/index.ts --target release",
     "asbuild": "npm run asbuild:debug && npm run asbuild:release",
     "test": "node tests",
-    "start": "npx serve .",
-    "function-build": "npm exec -- shopify app function build",
-    "function-preview": "cat ../../inputs/input.json | npm exec -- shopify app function run",
-    "function-validate": "cat ../../inputs/input.json | node ../../validate-function-output.js"
+    "start": "npx serve ."
   },
   "dependencies": {
     "json-as": "^0.5.23",

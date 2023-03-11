@@ -10,10 +10,10 @@
     "info": "shopify app info",
     "generate": "shopify app generate",
     "deploy": "shopify app deploy",
-    "function-build": "npm exec -- shopify app function build --path $INIT_CWD",
-    "function-preview": "cat inputs/input.json | npm exec -- shopify app function run --path $INIT_CWD",
-    "function-validate": "cat inputs/input.json | node validate-function-output.js",
-    "test-all": "node test-all-functions.js"
+    "function:build": "cross-env-shell npm exec -- shopify app function build --path $INIT_CWD",
+    "function:preview": "cross-env-shell cat inputs/input.json | npm exec -- shopify app function run --path $INIT_CWD",
+    "function:validate": "cat inputs/input.json | node validate-function-output.js",
+    "function:test-all": "node test-all-functions.js"
   },
   "dependencies": {
     "@shopify/app": "^3.45.0-pre.2",
@@ -23,7 +23,7 @@
   },
   "author": "nickwesselman",
   "devDependencies": {
-    "cross-var": "^1.1.0",
+    "cross-env": "^7.0.3",
     "graphql": "^16.6.0",
     "toml": "^3.0.0"
   }
