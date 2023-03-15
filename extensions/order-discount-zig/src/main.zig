@@ -70,27 +70,27 @@ pub fn function(input: api.FunctionInput, allocator: std.mem.Allocator) ?api.Fun
     };
 }
 
-pub fn main() u8 {
+export fn _start() void {
     var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
     defer arena.deinit();
 
     const allocator = arena.allocator();
 
-    // Read all stdin to an ArrayList
+    //Read all stdin to an ArrayList
     var inputStr = std.ArrayList(u8).init(allocator);
     var stdin = std.io.getStdIn().reader();
     var buffer: [1024]u8 = undefined;
     while (true) {
         const bytesRead = stdin.read(&buffer) catch |err| {
             std.debug.print("Error reading function input: {!}",.{err});
-            return 1;
+            return;
         };
         if (bytesRead == 0) {
             break; // No more data
         }
         inputStr.appendSlice(buffer[0..bytesRead]) catch |err| {
             std.debug.print("Error reading function input: {!}",.{err});
-            return 1;
+            return;
         };
     }
 
@@ -99,15 +99,13 @@ pub fn main() u8 {
         .allocator = allocator
     }) catch |err| {
         std.debug.print("Error parsing function input: {!}",.{err});
-        return 1;
+        return;
     };
-    
+
     const result = function(input, allocator);
 
     std.json.stringify(result, .{}, std.io.getStdOut().writer()) catch |err| {
         std.debug.print("Error serializing function output: {!}",.{err});
-        return 1;
+        return;
     };
-
-    return 0;
 }
