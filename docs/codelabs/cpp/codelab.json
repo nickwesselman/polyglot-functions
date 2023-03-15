@@ -2,12 +2,12 @@
   "environment": "web",
   "format": "html",
   "prefix": "https://storage.googleapis.com",
-  "updated": "2023-03-15T16:04:55-04:00",
-  "id": "assemblyscript",
+  "updated": "2023-03-15T16:17:25-04:00",
+  "id": "cpp",
   "duration": 0,
-  "title": "Group 2: AssemblyScript",
-  "summary": "How to create a function with AssemblyScript.",
-  "source": "assemblyscript.md",
+  "title": "Group 2: C++",
+  "summary": "How to create a function with C++.",
+  "source": "cpp.md",
   "theme": "",
   "status": [
     "published"
@@ -17,5 +17,5 @@
   ],
   "tags": [],
   "feedback": "https://github.com/nickwesselman/polyglot-functions/issues",
-  "url": "assemblyscript"
+  "url": "cpp"
 }

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1,user-scalable=yes">
 <meta name="theme-color" content="#4F7DC9">
 <meta charset="UTF-8">
-<title>Group 2: AssemblyScript</title>
+<title>Group 2: C&#43;&#43;</title>
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
 <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
@@ -14,43 +14,19 @@
 </head>
 <body>
 <google-codelab-analytics gaid=""></google-codelab-analytics>
-<google-codelab codelab-gaid="" id="assemblyscript" title="Group 2: AssemblyScript" environment="web" feedback-link="https://github.com/nickwesselman/polyglot-functions/issues">
-<google-codelab-step label="Generate the function extension" duration="0">
-<p>The following command will create an order discount Function at <code>extensions/order-discount-assemblyscript</code>, using our generic Wasm boilerplate.</p>
-<pre><code language="language-bash" class="language-bash">npm run generate extension -- --type order_discounts --template wasm --name order-discount-assemblyscript
-</code></pre>
+<google-codelab codelab-gaid="" id="cpp" title="Group 2: C&#43;&#43;" environment="web" feedback-link="https://github.com/nickwesselman/polyglot-functions/issues">
+<google-codelab-step label="Install C&#43;&#43; prerequisites" duration="0">
+<p>Download and unzip the <a href="https://github.com/WebAssembly/wasi-sdk/releases/tag/wasi-sdk-19" target="_blank">WASI SDK 19.0</a>.</p>
+<p>Examples in upcoming steps will assume this is placed in <code>/usr/local/wasi-sdk-19.0</code>.</p>
 </google-codelab-step>
-<google-codelab-step label="Initialize a new AssemblyScript project" duration="0">
-<ol type="1">
-<li>Navigate to the extension folder for your AssemblyScript function:<pre><code language="language-bash" class="language-bash">cd extensions/order-discount-assemblyscript
+<google-codelab-step label="Generate the function extension" duration="0">
+<p>The following command will create an order discount Function at <code>extensions/order-discount-cpp</code>, using our generic Wasm boilerplate.</p>
+<pre><code language="language-bash" class="language-bash">npm run generate extension -- --type order_discounts --template wasm --name order-discount-cpp
 </code></pre>
-</li>
-<li>Initialize a new npm module:<pre><code language="language-bash" class="language-bash">npm init --yes
-</code></pre>
-</li>
-<li>Install the AssemblyScript compiler:<pre><code language="language-bash" class="language-bash">npm install --save-dev assemblyscript
-</code></pre>
-</li>
-<li>Scaffold an AssemblyScript project:<pre><code language="language-bash" class="language-bash">npx asinit .
-</code></pre>
-</li>
-<li>Add the AssemblyScript wasi-shim, needed for targeting WASI:<pre><code language="language-bash" class="language-bash">npm install --save-dev @assemblyscript/wasi-shim
-</code></pre>
-</li>
-<li>Also for wasi-shim, add the following to the <code>asconfig.json</code>:<pre><code language="language-json" class="language-json">{
-    &#34;extends&#34;: &#34;./node_modules/@assemblyscript/wasi-shim/asconfig.json&#34;,
-    // ...
-}
-</code></pre>
-</li>
-<li>Since the WASI shim only provides a <a href="https://github.com/AssemblyScript/wasi-shim/blob/main/assembly/wasi_process.ts#L131" target="_blank">low-level API for reading STDIN</a>, you should add as-wasi as well (<a href="https://github.com/jedisct1/as-wasi/blob/master/REFERENCE_API_DOCS.md#readall" target="_blank"><code>Console.readAll</code></a>). Compatibility with wasi-shim is not in a published npm module yet, so you need to reference the GitHub repo.<pre><code language="language-bash" class="language-bash">npm install --save https://github.com/jedisct1/as-wasi
-</code></pre>
-</li>
-</ol>
 </google-codelab-step>
 <google-codelab-step label="Define your input query" duration="0">
-<p>Replace the contents of <code>extensions/order-discount-assemblyscript/input.graphql</code> with the following from GitHub:</p>
-<h2 is-upgraded>➡️ <a href="https://github.com/nickwesselman/polyglot-functions/blob/main/extensions/order-discount-assemblyscript/input.graphql" target="_blank">Get input query code</a></h2>
+<p>Replace the contents of <code>extensions/order-discount-cpp/input.graphql</code> with the following from GitHub:</p>
+<h2 is-upgraded>➡️ <a href="https://github.com/nickwesselman/polyglot-functions/blob/main/extensions/order-discount-cpp/input.graphql" target="_blank">Get input query code</a></h2>
 </google-codelab-step>
 <google-codelab-step label="Update your extension UI settings" duration="0">
 <p>You need to inform Shopify about the UI paths for configuring your function. These paths are already provided by the app template you used.</p>
@@ -69,49 +45,44 @@ key = &#34;function-configuration&#34;
 </code></pre>
 </google-codelab-step>
 <google-codelab-step label="Add build command and path settings" duration="0">
-<p>You also need to inform the Shopify CLI about how to build your AssemblyScript wasm module, and where to expect the build output.</p>
+<p>You also need to inform the Shopify CLI about how to build your C++ wasm module, and where to expect the build output.</p>
 <p>In <code>shopify.function.extension.toml</code>, replace the <code>[build]</code> section with the following:</p>
 <pre><code language="language-toml" class="language-toml">[build]
-command = &#34;npm run asbuild:release&#34;
-path = &#34;build/release.wasm&#34;
+command = &#34;/usr/local/wasi-sdk-19.0/bin/clang++ -Oz -fno-exceptions -std=c++17 --sysroot=/usr/local/wasi-sdk-19.0/share/wasi-sysroot src/main.cpp -o main.wasm&#34;
+path = &#34;main.wasm&#34;
 </code></pre>
+<p>Adjust the <strong>command</strong> as needed for your WASI SDK path. Note that it appears twice. You may also create a build script (<a href="https://github.com/nickwesselman/polyglot-functions/blob/main/extensions/order-discount-cpp/build.sh" target="_blank">example</a>) and invoke that instead as your <strong>command</strong> (<a href="https://github.com/nickwesselman/polyglot-functions/blob/main/extensions/order-discount-cpp/shopify.function.extension.toml#L6" target="_blank">example</a>).</p>
 </google-codelab-step>
-<google-codelab-step label="Write your function logic in AssemblyScript" duration="0">
-<p>In <code>assembly/index.ts</code>, implement the following function logic, outputting appropriate JSON for an <a href="https://shopify.dev/docs/api/functions/reference/order-discounts/graphql/functionresult" target="_blank">order discount function result</a>.</p>
+<google-codelab-step label="Write your function logic in C&#43;&#43;" duration="0">
+<p>Create a <code>src/main.cpp</code> file and implement the following function logic, outputting appropriate JSON for an <a href="https://shopify.dev/docs/api/functions/reference/order-discounts/graphql/functionresult" target="_blank">order discount function result</a>.</p>
 <pre><code>IF customer has VIP metafield with a value of &#39;true&#39;
 AND products in their cart with tag X have a total of more than $Y
 THEN discount the order by Z%
 </code></pre>
 <p><em>Hint</em>: You can find a completed example on GitHub:</p>
-<h2 is-upgraded>➡️ <a href="https://github.com/nickwesselman/polyglot-functions/tree/main/extensions/order-discount-assemblyscript/assembly" target="_blank">Get AssemblyScript function code</a></h2>
-<p>This example requires adding json-as to your AssemblyScript project, and creating API classes for JSON parse/stringify:</p>
-<pre><code language="language-bash" class="language-bash">npm install --save json-as
-npm install visitor-as --save-dev --force
-</code></pre>
-<p>json-as also requires adding the following <code>transform</code> configuration to the <code>options</code> in your <code>asconfig.json</code>:</p>
-<pre><code language="language-json" class="language-json">{
-  &#34;options&#34;: {
-    &#34;bindings&#34;: &#34;esm&#34;,
-    &#34;transform&#34;: [&#34;json-as/transform&#34;]
-  }
-}
-</code></pre>
+<h2 is-upgraded>➡️ <a href="https://github.com/nickwesselman/polyglot-functions/tree/main/extensions/order-discount-cpp/src" target="_blank">Get C++ function code</a></h2>
+<p>This example uses the <a href="https://github.com/jorgen/json_struct" target="_blank">json_struct</a> header library to parse and output JSON.</p>
 </google-codelab-step>
 <google-codelab-step label="Test your function locally" duration="0">
 <ol type="1">
-<li>Build your function code based on the command in <code>shopify.function.extension.toml</code>:<pre><code language="language-bash" class="language-bash">npm run function:build --prefix ../..
+<li>Navigate to your function folder:<pre><code language="language-bash" class="language-bash">cd extensions/order-discount-cpp
 </code></pre>
 </li>
-<li>Validate your function&#39;s output against the <code>FunctionResult</code> GraphQL type:<pre><code language="language-bash" class="language-bash">npm run function:validate --prefix ../..
+</ol>
+<ol type="1" start="2">
+<li>Build your function code based on the command in <code>shopify.function.extension.toml</code>:<pre><code language="language-bash" class="language-bash">npm run function:build
 </code></pre>
 </li>
-<li>Preview your function&#39;s JSON output and performance profile:<pre><code language="language-bash" class="language-bash">npm run function:preview --prefix ../..
+<li>Validate your function&#39;s output against the <code>FunctionResult</code> GraphQL type:<pre><code language="language-bash" class="language-bash">npm run function:validate
+</code></pre>
+</li>
+<li>Preview your function&#39;s JSON output and performance profile:<pre><code language="language-bash" class="language-bash">npm run function:preview
 </code></pre>
 </li>
 </ol>
 </google-codelab-step>
 <google-codelab-step label="Test your function on Shopify" duration="0">
-<p>Use the following steps, selecting the <code>order-discount-assemblyscript</code> discount type, and using <code>ASSEMBLYSCRIPT</code> as your discount code. (Google codelabs doesn&#39;t support parameterized includes 🙃)</p>
+<p>Use the following steps, selecting the <code>order-discount-cpp</code> discount type, and using <code>C++</code> as your discount code. (Google codelabs doesn&#39;t support parameterized includes 🙃)</p>
 <h2 is-upgraded>Testing a discount on Shopify</h2>
 <ol type="1">
 <li>Navigate back to your app root:<pre><code language="language-bash" class="language-bash">cd ../..
@@ -139,7 +110,8 @@ Once the deploy is complete, you will see a <strong>Deployed to Shopify!</strong
 <p class="image-container"><img alt="Applied discount" src="img/c642dfa268d90a6b.png"></p>
 </google-codelab-step>
 <google-codelab-step label="Awesome work!" duration="0">
-<p>You&#39;re a master assembler. Onto another language?</p>
+<p>You put the &#34;plus&#34; in C++! Onto another language?</p>
+<p><em>Thanks to Elad Kishon for </em><a href="https://medium.com/@eladk/implementing-a-webassembly-shopify-function-using-c-fa9904e21d9" target="_blank"><em>paving the way</em></a><em> for this example.</em></p>
 </google-codelab-step>
 </google-codelab>
 <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>

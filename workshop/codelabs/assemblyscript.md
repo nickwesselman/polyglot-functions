@@ -79,7 +79,7 @@ Replace the contents of `extensions/order-discount-assemblyscript/input.graphql`
 
 ## Add build command and path settings
 
-You also need to inform the Shopify CLI about how to build your Go wasm module, and where to expect the build output.
+You also need to inform the Shopify CLI about how to build your AssemblyScript wasm module, and where to expect the build output.
 
 In `shopify.function.extension.toml`, replace the `[build]` section with the following:
 
