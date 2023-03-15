@@ -15,11 +15,112 @@
 <body>
 <google-codelab-analytics gaid=""></google-codelab-analytics>
 <google-codelab codelab-gaid="" id="zig" title="Group 3: Zig" environment="web" feedback-link="https://github.com/nickwesselman/polyglot-functions/issues">
-<google-codelab-step label="Step 1" duration="0">
-<p>hello world</p>
+<google-codelab-step label="Install Zig prerequisites" duration="0">
+<p><a href="https://ziglang.org/download/" target="_blank">Download or install</a> the Zig toolchain.</p>
+<p>Installing from a <a href="https://github.com/ziglang/zig/wiki/Install-Zig-from-a-Package-Manager" target="_blank">package manager</a> is likely your easiest path.</p>
 </google-codelab-step>
-<google-codelab-step label="Step 2" duration="0">
-<p>hello world</p>
+<google-codelab-step label="Generate the function extension" duration="0">
+<p>The following command will create an order discount Function at <code>extensions/order-discount-zig</code>, using our generic Wasm boilerplate.</p>
+<pre><code language="language-bash" class="language-bash">npm run generate extension -- --type order_discounts --template wasm --name order-discount-zig
+</code></pre>
+</google-codelab-step>
+<google-codelab-step label="Initialize a new Zig project" duration="0">
+<ol type="1">
+<li>Navigate to the extension folder for your Zig function:<pre><code language="language-bash" class="language-bash">cd extensions/order-discount-zig
+</code></pre>
+</li>
+<li>Initialize the Zig project:<pre><code language="language-bash" class="language-bash">zig init-exe
+</code></pre>
+</li>
+<li>In the created <code>build.zig</code>, update the <code>const target</code> to default to WASI:<pre><code language="language-zig" class="language-zig">const target = .{ .cpu_arch = .wasm32, .os_tag = .wasi };
+</code></pre>
+</li>
+</ol>
+</google-codelab-step>
+<google-codelab-step label="Define your input query" duration="0">
+<p>Replace the contents of <code>extensions/order-discount-zig/input.graphql</code> with the following from GitHub:</p>
+<h2 is-upgraded>➡️ <a href="https://github.com/nickwesselman/polyglot-functions/blob/main/extensions/order-discount-zig/input.graphql" target="_blank">Get input query code</a></h2>
+</google-codelab-step>
+<google-codelab-step label="Update your extension UI settings" duration="0">
+<p>You need to inform Shopify about the UI paths for configuring your function. These paths are already provided by the app template you used.</p>
+<p>In <code>shopify.function.extension.toml</code>, replace the <code>[ui.paths]</code> section with the following:</p>
+<pre><code language="language-toml" class="language-toml">[ui.paths]
+create = &#34;/discount/:functionId/new&#34;
+details = &#34;/discount/:functionId/:id&#34;
+</code></pre>
+</google-codelab-step>
+<google-codelab-step label="Add input query variable settings" duration="0">
+<p>You also need to inform Shopify about where to find GraphQL variable values that will be used when executing your input query.</p>
+<p>Add the following to <code>shopify.function.extension.toml</code>:</p>
+<pre><code language="language-toml" class="language-toml">[input.variables]
+namespace = &#34;$app:polyglot-functions&#34;
+key = &#34;function-configuration&#34;
+</code></pre>
+</google-codelab-step>
+<google-codelab-step label="Add build command and path settings" duration="0">
+<p>You also need to inform the Shopify CLI about how to build your Zig wasm module, and where to expect the build output.</p>
+<p>In <code>shopify.function.extension.toml</code>, replace the <code>[build]</code> section with the following:</p>
+<pre><code language="language-toml" class="language-toml">[build]
+command = &#34;zig build -Drelease-small=true&#34;
+path = &#34;zig-out/bin/order-discount-zig.wasm&#34;
+</code></pre>
+</google-codelab-step>
+<google-codelab-step label="Write your function logic in Zig" duration="0">
+<p>Update <code>src/main.zig</code> and implement the following function logic, outputting appropriate JSON for an <a href="https://shopify.dev/docs/api/functions/reference/order-discounts/graphql/functionresult" target="_blank">order discount function result</a>.</p>
+<pre><code>IF customer has VIP metafield with a value of &#39;true&#39;
+AND products in their cart with tag X have a total of more than $Y
+THEN discount the order by Z%
+</code></pre>
+<p><em>Hint</em>: You can find a completed example on GitHub:</p>
+<h2 is-upgraded>➡️ <a href="https://github.com/nickwesselman/polyglot-functions/tree/main/extensions/order-discount-zig/src" target="_blank">Get Zig function code</a></h2>
+</google-codelab-step>
+<google-codelab-step label="Test your function locally" duration="0">
+<ol type="1" start="2">
+<li>Build your function code based on the command in <code>shopify.function.extension.toml</code>:<pre><code language="language-bash" class="language-bash">npm run function:build
+</code></pre>
+</li>
+<li>Validate your function&#39;s output against the <code>FunctionResult</code> GraphQL type:<pre><code language="language-bash" class="language-bash">npm run function:validate
+</code></pre>
+</li>
+<li>Preview your function&#39;s JSON output and performance profile:<pre><code language="language-bash" class="language-bash">npm run function:preview
+</code></pre>
+</li>
+</ol>
+<p>Note: Even with a successful output, Zig outputs an error message which I&#39;ve been unable to resolve. It does not seem to affect execution:</p>
+<pre><code language="language-plaintext" class="language-plaintext">error while executing at wasm backtrace:
+    0:  0x202 - &lt;unknown&gt;!&lt;wasm function 3&gt;
+</code></pre>
+</google-codelab-step>
+<google-codelab-step label="Test your function on Shopify" duration="0">
+<p>Use the following steps, selecting the <code>order-discount-zig</code> discount type, and using <code>ZIG</code> as your discount code. (Google codelabs doesn&#39;t support parameterized includes 🙃)</p>
+<h2 is-upgraded>Testing a discount on Shopify</h2>
+<ol type="1">
+<li>Navigate back to your app root:<pre><code language="language-bash" class="language-bash">cd ../..
+</code></pre>
+</li>
+<li>Deploy the functions in your app.<pre><code language="language-bash" class="language-bash">npm run deploy
+</code></pre>
+<ul>
+<li>If asked, <em>Deploy to the same org and app as you used for dev?</em>, answer <strong>Yes</strong>.</li>
+<li>When asked, <em>Make the following changes...?</em>, answer <strong>Yes</strong>.</li>
+</ul>
+Once the deploy is complete, you will see a <strong>Deployed to Shopify!</strong> message.</li>
+<li>Open your store admin and navigate to <strong>Discounts</strong>.</li>
+<li>Click <strong>Create discount</strong> and then select the discount type you just created.<ul>
+<li>If you see an error screen, ensure you still have <code>npm run dev</code> executing in a terminal window.</li>
+</ul>
+</li>
+<li>Keep <strong>Discount code</strong> selected, and enter a discount code name based on the language of the discount you just created. (For example, <strong>RUST</strong> for Rust or <strong>ZIG</strong> for Zig.) Leave the other fields as default and click <strong>Save</strong>.</li>
+<li>Open your online store and add <strong>The Complete Snowboard</strong> to your cart. Continue to <strong>View my cart</strong> and <strong>Checkout</strong>.</li>
+<li>In <strong>Contact information</strong>, enter <strong>karine.ruby@example.com</strong>.</li>
+<li>In <strong>Discount code</strong>, enter the code you just created, then click <strong>Apply</strong>.</li>
+</ol>
+<p>You should immediately see the discount applied, based on the logic in the Wasm module you deployed to Shopify.</p>
+<p>Note that if you change the customer (to one that&#39;s not a VIP), or add a different product (which doesn&#39;t qualify for VIP discounts), the discount is removed.</p>
+<p class="image-container"><img alt="Applied discount" src="img/c642dfa268d90a6b.png"></p>
+</google-codelab-step>
+<google-codelab-step label="Awesome work!" duration="0">
+<p>All our base are belong to YOU!!! Onto another language?</p>
 </google-codelab-step>
 </google-codelab>
 <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
