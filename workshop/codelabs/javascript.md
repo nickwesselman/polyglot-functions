@@ -1,7 +1,8 @@
 summary: How to create a function with JavaScript.
-id: 80479db7-23d3-4cd7-8b7d-d1e5cab43e57
+id: javascript
 status: Published
 categories: group-one
+feedback link: https://github.com/nickwesselman/polyglot-functions/issues
 
 # Group 1: JavaScript
 

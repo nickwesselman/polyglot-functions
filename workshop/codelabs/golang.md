@@ -1,7 +1,8 @@
 summary: How to create a function with Go.
-id: 92eca6a8-2120-46ae-a4c8-e47452fdfc73
+id: golang
 status: Published
 categories: group-two
+feedback link: https://github.com/nickwesselman/polyglot-functions/issues
 
 # Group 2: Go
 

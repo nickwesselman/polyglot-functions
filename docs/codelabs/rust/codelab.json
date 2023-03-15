@@ -2,9 +2,8 @@
   "environment": "web",
   "format": "html",
   "prefix": "https://storage.googleapis.com",
-  "mainga": "UA-49880327-14",
-  "updated": "2023-03-14T22:24:09-04:00",
-  "id": "05e73721-43ae-40ed-a50b-7b3ee0e5b123",
+  "updated": "2023-03-15T09:43:03-04:00",
+  "id": "rust",
   "duration": 0,
   "title": "Group 1: Rust",
   "summary": "How to create a function with Rust.",
@@ -17,5 +16,6 @@
     "group-one"
   ],
   "tags": [],
-  "url": "05e73721-43ae-40ed-a50b-7b3ee0e5b123"
+  "feedback": "https://github.com/nickwesselman/polyglot-functions/issues",
+  "url": "rust"
 }

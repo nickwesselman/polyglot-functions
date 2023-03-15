@@ -1,7 +1,8 @@
 summary: How to create a function with Zig.
-id: 2b74e986-eef7-4f91-ba46-b82ab75059e0
+id: zig
 status: Published
 categories: group-three
+feedback link: https://github.com/nickwesselman/polyglot-functions/issues
 
 # Group 3: Zig
 

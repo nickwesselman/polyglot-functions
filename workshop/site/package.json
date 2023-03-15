@@ -31,6 +31,7 @@
     "jshint": "^2.9.6",
     "jshint-stylish": "^2.2.1",
     "merge-stream": "^1.0.1",
+    "nodemon": "^2.0.21",
     "path": "^0.12.7",
     "postcss-syntax": "^0.34.0",
     "swig-templates": "^2.0.3",
@@ -44,11 +45,13 @@
   },
   "dependencies": {
     "node-sass": "^7.0.1",
-    "sass": "^1.49.9",
-    "postcss-syntax": "^0.34.0"
+    "postcss-syntax": "^0.34.0",
+    "sass": "^1.49.9"
   },
   "scripts": {
-    "start": "cd ../codelabs && mkdir -p build && claat export -o ./build/ *.md && cd ../site/ && npx gulp serve",
-    "build": "cd ../codelabs && mkdir -p build && claat export -o ./build/ *.md && cd ../site/ && npx gulp dist"
+    "start": "cd ../codelabs && mkdir -p build && claat export -ga '' -o ./build/ *.md && cd ../site/ && npx gulp serve",
+    "watch": "nodemon --exec \"npm run start\" -w ../codelabs -i ../codelabs/build -e md,gif,png",
+    "build": "cd ../codelabs && mkdir -p build && claat export -ga '' -o ./build/ *.md && cd ../site/ && npx gulp dist",
+    "preview": "npx gulp serve:dist"
   }
 }

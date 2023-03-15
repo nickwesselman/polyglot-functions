@@ -1,7 +1,8 @@
 summary: How to create a function with Rust.
-id: 05e73721-43ae-40ed-a50b-7b3ee0e5b123
+id: rust
 status: Published
 categories: group-one
+feedback link: https://github.com/nickwesselman/polyglot-functions/issues
 
 # Group 1: Rust
 

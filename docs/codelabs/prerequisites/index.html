@@ -1,0 +1,95 @@
+
+<!doctype html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1,user-scalable=yes">
+<meta name="theme-color" content="#4F7DC9">
+<meta charset="UTF-8">
+<title>** Prerequisites: Partner account, development shop, and app creation</title>
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+<link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+<style>
+.success{color:#1e8e3e}.error{color:red} </style>
+</head>
+<body>
+<google-codelab-analytics gaid=""></google-codelab-analytics>
+<google-codelab codelab-gaid="" id="prerequisites" title="** Prerequisites: Partner account, development shop, and app creation" environment="web" feedback-link="https://github.com/nickwesselman/polyglot-functions/issues">
+<google-codelab-step label="Create a Shopify partner account" duration="0">
+<p>You can <a href="https://partners.shopify.com/signup" target="_blank">sign up for a Partner account</a> on partners.shopify.com. If you already have a Shopify partner account and organization that you can use for this workshop, you can skip this.</p>
+</google-codelab-step>
+<google-codelab-step label="Create a development store" duration="0">
+<ol type="1">
+<li>From the Shopify Partners portal, navigate to <strong>Stores</strong> &gt; <strong>Add store</strong> &gt; <strong>Create development store</strong>.</li>
+<li>It&#39;s important for this workshop that you select the correct options when creating your store:<ul>
+<li>For <strong>Development store use</strong>, select <strong>Create a store to test and build</strong>.</li>
+<li>You may use whatever Store Name you like.</li>
+<li>For <strong>Which build do you want to test?</strong>, select <strong>Developer Preview</strong> &gt; <strong>Checkout Extensibility</strong>.</li>
+<li>For <strong>Data and configurations</strong>, select <strong>Start with test data</strong>.</li>
+</ul>
+</li>
+<li>After creating your development store, the store admin will open. Hover over the <strong>Online Store</strong> sales channel and click the 👁️ icon to open your store.</li>
+</ol>
+<p class="image-container"><img alt="The online store navigation" src="img/c6672f8f2bdf070b.png"></p>
+</google-codelab-step>
+<google-codelab-step label="Create and install an app" duration="0">
+<ol type="1">
+<li>Ensure you have a <a href="https://nodejs.org/en/download/" target="_blank">recent version of Node.js</a> installed.</li>
+<li>Use the following command to create a copy of the app we will be using for this workshop:<pre><code language="language-bash" class="language-bash">npm init @shopify/app@pre -- --template https://github.com/nickwesselman/polyglot-functions --name polyglot-functions
+</code></pre>
+</li>
+<li>This will create an app in a folder called <code>polyglot-functions</code>. Navigate into it.<pre><code language="language-bash" class="language-bash">cd polyglot-functions
+</code></pre>
+</li>
+<li>Delete the completed functions in the <code>extensions</code> folder – no cheating. 😇<pre><code language="language-bash" class="language-bash">rm -rf extensions
+</code></pre>
+</li>
+<li>Start the app development mode and follow the prompts:<pre><code language="language-bash" class="language-bash">npm run dev
+</code></pre>
+<ul>
+<li>Open Partners and log in, if prompted.</li>
+<li>Select the correct partner organization, if prompted.</li>
+<li>When asked, <em>Create this project as a new app on Shopify?</em>, select <strong>Yes</strong>.</li>
+<li>Keep the default app name, <code>polyglot-functions</code>.</li>
+<li>If asked, <em>Which store would you like to use to view your project?</em>, select the store created in the previous step.</li>
+<li>If asked, <em>Have Shopify automatically update your app&#39;s URL?</em>, select <strong>Always</strong>.</li>
+</ul>
+</li>
+<li>Once your app is running and logs are streaming, press <strong>p</strong> to open your browser, or copy/paste the provided <strong>Preview URL</strong>.</li>
+<li>The app installation page will open. Click <strong>Install app</strong>.</li>
+</ol>
+<p>You should see the home page of the app:</p>
+<p class="image-container"><img alt="The app home" src="img/6c2958ba671ee9.png"></p>
+</google-codelab-step>
+<google-codelab-step label="Set up additional test data" duration="0">
+<p>You&#39;re doing great! For this workshop, the discount logic we will be implementing in each language is:</p>
+<pre><code>IF customer has VIP metafield with a value of &#39;true&#39;
+AND products in their cart with tag X have a total of more than $Y
+THEN discount the order by Z%
+</code></pre>
+<p>But first, you will need to ensure that your store has a customer and products that meet these requirements. The app you just installed added a customer <strong>metafield</strong>. Metafields are custom data fields that stores and apps can add to various domain objects in Shopify.</p>
+<ol type="1">
+<li>In your store admin, navigate to <strong>Customers</strong> &gt; <strong>Karine Ruby</strong>.</li>
+<li>Under <strong>Metafields</strong>, click <strong>Show all</strong>.</li>
+<li>For <strong>VIP Customer</strong>, select <strong>True</strong>.</li>
+<li>Click <strong>Save</strong>.</li>
+</ol>
+<p>Next, let&#39;s add the needed tag to a product.</p>
+<ol type="1">
+<li>Still in your store admin, navigate to <strong>Products</strong> &gt; <strong>The Complete Snowboard</strong>.</li>
+<li>In the right column, under <strong>Tags</strong>, add <strong>vip</strong>.</li>
+<li>Click <strong>Save</strong>.</li>
+</ol>
+<p class="image-container"><img alt="The vip tag" src="img/343b7777c8d5fc91.png"></p>
+</google-codelab-step>
+<google-codelab-step label="That&#39;s it!" duration="0">
+<p>Nice work. If you like, you can go back to your online store. If this is a group workshop, you can explore the products and checkout process while everyone else finishes!</p>
+</google-codelab-step>
+</google-codelab>
+<script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+<script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+<script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+<script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+<script src="//support.google.com/inapp/api.js"></script>
+</body>
+</html>

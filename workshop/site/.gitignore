@@ -16,3 +16,4 @@ app/bower_components/jszip/vendor
 app/js/bundle
 
 /dist/
+/build/
