@@ -2,12 +2,12 @@
   "environment": "web",
   "format": "html",
   "prefix": "https://storage.googleapis.com",
-  "updated": "2023-03-15T13:45:31-04:00",
-  "id": "rust",
+  "updated": "2023-03-15T14:00:35-04:00",
+  "id": "typescript",
   "duration": 0,
-  "title": "Group 1: Rust",
-  "summary": "How to create a function with Rust.",
-  "source": "rust.md",
+  "title": "Group 1: TypeScript",
+  "summary": "How to create a function with TypeScript.",
+  "source": "typescript.md",
   "theme": "",
   "status": [
     "published"
@@ -17,5 +17,5 @@
   ],
   "tags": [],
   "feedback": "https://github.com/nickwesselman/polyglot-functions/issues",
-  "url": "rust"
+  "url": "typescript"
 }

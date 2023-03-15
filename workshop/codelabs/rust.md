@@ -6,6 +6,8 @@ feedback link: https://github.com/nickwesselman/polyglot-functions/issues
 
 # Group 1: Rust
 
+## TODO: Install Rust prerequisites
+
 ## Generate the function extension
 
 The following command will create an order discount Function at `extensions/order-discount-rust`, using our Rust boilerplate.
@@ -16,7 +18,7 @@ npm run generate extension -- --type order_discounts --template rust --name orde
 
 ## Define your input query
 
-The [input query](https://shopify.dev/docs/apps/functions/input-output#input) defines the data that Shopify will provide via STDIN to your function.
+<<include/input-query-intro.md>>
 
 Replace the contents of `extensions/order-discount-rust/input.graphql` with the following from GitHub:
 
@@ -24,27 +26,11 @@ Replace the contents of `extensions/order-discount-rust/input.graphql` with the 
 
 ## Update your extension UI settings
 
-You need to inform Shopify about the UI paths for configuring your function. These paths are already provided by the app template you used.
-
-In `extensions/order-discount-rust/shopify.function.extension.toml`, replace the `[ui.paths]` section with the following:
-
-```toml
-[ui.paths]
-create = "/discount/:functionId/new"
-details = "/discount/:functionId/:id"
-```
+<<include/extension-ui-settings.md>>
 
 ## Add input query variable settings
 
-You also need to inform Shopify about where to find GraphQL variable values that will be used when executing your input query.
-
-Add the following to `extensions/order-discount-rust/shopify.function.extension.toml`:
-
-```toml
-[input.variables]
-namespace = "$app:polyglot-functions"
-key = "function-configuration"
-```
+<<include/input-variable-settings.md>>
 
 ## Write your function logic in Rust
 

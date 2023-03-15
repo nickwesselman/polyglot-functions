@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1,user-scalable=yes">
 <meta name="theme-color" content="#4F7DC9">
 <meta charset="UTF-8">
-<title>Group 1: Rust</title>
+<title>Group 1: TypeScript</title>
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
 <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
@@ -14,17 +14,27 @@
 </head>
 <body>
 <google-codelab-analytics gaid=""></google-codelab-analytics>
-<google-codelab codelab-gaid="" id="rust" title="Group 1: Rust" environment="web" feedback-link="https://github.com/nickwesselman/polyglot-functions/issues">
-<google-codelab-step label="TODO: Install Rust prerequisites" duration="0">
-</google-codelab-step>
+<google-codelab codelab-gaid="" id="typescript" title="Group 1: TypeScript" environment="web" feedback-link="https://github.com/nickwesselman/polyglot-functions/issues">
 <google-codelab-step label="Generate the function extension" duration="0">
-<p>The following command will create an order discount Function at <code>extensions/order-discount-rust</code>, using our Rust boilerplate.</p>
-<pre><code language="language-bash" class="language-bash">npm run generate extension -- --type order_discounts --template rust --name order-discount-rust
+<p>The following command will create an order discount Function at <code>extensions/order-discount-typescript</code>, using our TypeScript boilerplate.</p>
+<pre><code language="language-bash" class="language-bash">npm run generate extension -- --type order_discounts --template typescript --name order-discount-typescript
 </code></pre>
 </google-codelab-step>
 <google-codelab-step label="Define your input query" duration="0">
-<p>Replace the contents of <code>extensions/order-discount-rust/input.graphql</code> with the following from GitHub:</p>
-<h2 is-upgraded>➡️ <a href="https://github.com/nickwesselman/polyglot-functions/blob/main/extensions/order-discount-rust/input.graphql" target="_blank">Get input query code</a></h2>
+<p>Replace the contents of <code>extensions/order-discount-typescript/input.graphql</code> with the following from GitHub:</p>
+<h2 is-upgraded>➡️ <a href="https://github.com/nickwesselman/polyglot-functions/blob/main/extensions/order-discount-typescript/input.graphql" target="_blank">Get input query code</a></h2>
+</google-codelab-step>
+<google-codelab-step label="Generate types for the input query" duration="0">
+<p>For JavaScript and TypeScript, we provide tooling to generate types for working with your function input and output.</p>
+<ol type="1">
+<li>Navigate to your function extension folder:<pre><code language="language-bash" class="language-bash">cd extensions/order-discount-typescript
+</code></pre>
+</li>
+<li>Generate types using the following npm script:<pre><code language="language-bash" class="language-bash">npm run typegen
+</code></pre>
+</li>
+<li>(optional) Open <code>src/index.ts</code> in an IDE that supports TypeScript, such as Visual Studio Code. Note that you get language server features (such as autocomplete, hover info, etc.) on the <code>InputQuery</code> and <code>FunctionResult</code> types.</li>
+</ol>
 </google-codelab-step>
 <google-codelab-step label="Update your extension UI settings" duration="0">
 <p>You need to inform Shopify about the UI paths for configuring your function. These paths are already provided by the app template you used.</p>
@@ -42,35 +52,30 @@ namespace = &#34;$app:polyglot-functions&#34;
 key = &#34;function-configuration&#34;
 </code></pre>
 </google-codelab-step>
-<google-codelab-step label="Write your function logic in Rust" duration="0">
-<p>In <code>extensions/order-discount-rust/src/main.rs</code>, implement the following function logic, outputting appropriate JSON for an <a href="https://shopify.dev/docs/api/functions/reference/order-discounts/graphql/functionresult" target="_blank">order discount function result</a>.</p>
+<google-codelab-step label="Write your function logic in TypeScript" duration="0">
+<p>In <code>src/index.ts</code>, implement the following function logic, outputting appropriate JSON for an <a href="https://shopify.dev/docs/api/functions/reference/order-discounts/graphql/functionresult" target="_blank">order discount function result</a>.</p>
 <pre><code>IF customer has VIP metafield with a value of &#39;true&#39;
 AND products in their cart with tag X have a total of more than $Y
 THEN discount the order by Z%
 </code></pre>
 <p><em>Hint</em>: You can find a completed example on GitHub:</p>
-<h2 is-upgraded>➡️ <a href="https://github.com/nickwesselman/polyglot-functions/blob/main/extensions/order-discount-rust/src/main.rs" target="_blank">Get Rust function code</a></h2>
+<h2 is-upgraded>➡️ <a href="https://github.com/nickwesselman/polyglot-functions/blob/main/extensions/order-discount-typescript/src/index.ts" target="_blank">Get TypeScript function code</a></h2>
 </google-codelab-step>
 <google-codelab-step label="Test your function locally" duration="0">
 <ol type="1">
-<li>Navigate to your function folder:<pre><code language="language-bash" class="language-bash">cd extensions/order-discount-rust
+<li>The following npm script will bundle your TypeScript and compile it using <a href="https://github.com/Shopify/javy" target="_blank">Javy</a>:<pre><code language="language-bash" class="language-bash">npm run build
 </code></pre>
 </li>
-</ol>
-<ol type="1" start="2">
-<li>Build your function code based on the command in <code>shopify.function.extension.toml</code>:<pre><code language="language-bash" class="language-bash">npm run function:build
+<li>Validate your function&#39;s output against the <code>FunctionResult</code> GraphQL type:<pre><code language="language-bash" class="language-bash">npm run function:validate --prefix ../..
 </code></pre>
 </li>
-<li>Validate your function&#39;s output against the <code>FunctionResult</code> GraphQL type:<pre><code language="language-bash" class="language-bash">npm run function:validate
-</code></pre>
-</li>
-<li>Preview your function&#39;s JSON output and performance profile:<pre><code language="language-bash" class="language-bash">npm run function:preview
+<li>Preview your function&#39;s JSON output and performance profile:<pre><code language="language-bash" class="language-bash">npm run function:preview --prefix ../.. 
 </code></pre>
 </li>
 </ol>
 </google-codelab-step>
 <google-codelab-step label="Test your function on Shopify" duration="0">
-<p>Use the following steps, selecting the <code>order-discount-rust</code> discount type, and using <code>RUST</code> as your discount code. (Google codelabs doesn&#39;t support parameterized includes 🙃)</p>
+<p>Use the following steps, selecting the <code>order-discount-typescript</code> discount type, and using <code>TYPESCRIPT</code> as your discount code. (Google codelabs doesn&#39;t support parameterized includes 🙃)</p>
 <h2 is-upgraded>Testing a discount on Shopify</h2>
 <ol type="1">
 <li>Navigate back to your app root:<pre><code language="language-bash" class="language-bash">cd ../..
@@ -98,7 +103,7 @@ Once the deploy is complete, you will see a <strong>Deployed to Shopify!</strong
 <p class="image-container"><img alt="Applied discount" src="img/c642dfa268d90a6b.png"></p>
 </google-codelab-step>
 <google-codelab-step label="Awesome work!" duration="0">
-<p>You&#39;re a Rust champion. Onto another language?</p>
+<p>You&#39;re a TypeScript maven. Onto another language?</p>
 </google-codelab-step>
 </google-codelab>
 <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
