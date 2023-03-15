@@ -23,6 +23,7 @@
     "start": "npx serve ."
   },
   "dependencies": {
+    "as-wasi": "github:jedisct1/as-wasi",
     "json-as": "^0.5.23",
     "visitor-as": "^0.11.4"
   }

@@ -1,6 +1,6 @@
 import { FunctionInput, FunctionResult, Configuration } from "./api";
 import { JSON } from "json-as";
-import { Console } from "./console";
+import { Console } from "as-wasi/assembly";
 
 let calculateDiscount = (input: FunctionInput) : FunctionResult => {
   let noDiscount: FunctionResult = {
