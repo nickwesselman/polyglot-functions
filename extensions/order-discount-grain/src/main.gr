@@ -151,11 +151,13 @@ let discountFunction = (json) => {
                             \"value\":" ++ toString(configuration.discountPercentage) ++ "
                         }
                     },
-                    \"targets\": {
-                        \"orderSubtotal\": {
-                            \"excludedVariantIds\": []
+                    \"targets\": [
+                        {
+                            \"orderSubtotal\": {
+                                \"excludedVariantIds\": []
+                            }
                         }
-                    },
+                    ],
                     \"message\": \"VIP Discount\"
                 }
             ],
