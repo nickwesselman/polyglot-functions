@@ -558,7 +558,7 @@ const generateView = () => {
     // Full list of views
     const all = collectMetadata();
 
-    let codelabUrlParams = '';
+    let codelabUrlParams = 'index=./polyglot-functions';
     if (view.ga || args.indexGa) {
       let viewGa = args.indexGa ? args.indexGa : view.ga;
       codelabUrlParams += '&viewga=' + viewGa;
