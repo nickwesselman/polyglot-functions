@@ -1,5 +1,17 @@
-import { Shopify } from "@shopify/shopify-api";
-import createMetafieldDefinition from "./createMetafieldDefinition.graphql";
+import shopify from "../shopify.js";
+
+const CREATE_METAFIELD_DEFINITION = `mutation CreateMetafieldDefinition($definition: MetafieldDefinitionInput!) {
+  metafieldDefinitionCreate(definition: $definition) {
+    createdDefinition {
+      id
+    }
+    userErrors {
+      field
+      message
+      code
+    }
+  }
+}`;
 
 export const MetafieldDefinitions = {
   customerLevel: {
@@ -25,12 +37,14 @@ export const MetafieldDefinitions = {
 
 export const DiscountMetafields = {
   //TODO: Get definitions and only create if they don't exist
-  createDefinitions: async (shop, accessToken) => {
+  createDefinitions: async (session) => {
     Object.values(MetafieldDefinitions).forEach(async (definition) => {
-      const client = new Shopify.Clients.Graphql(shop, accessToken);
+      const client = new shopify.api.clients.Graphql({
+        session
+      });
       const payload = {
         data: {
-          query: createMetafieldDefinition,
+          query: CREATE_METAFIELD_DEFINITION,
           variables: {
             definition,
           },

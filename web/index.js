@@ -10,6 +10,7 @@ import productCreator from "./product-creator.js";
 import GDPRWebhookHandlers from "./gdpr.js";
 
 import metafields from "./frontend/metafields.js";
+import { DiscountMetafields } from "./discounts/metafields.js";
 
 const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT, 10);
 
@@ -147,6 +148,9 @@ app.get(shopify.config.auth.path, shopify.auth.begin());
 app.get(
   shopify.config.auth.callbackPath,
   shopify.auth.callback(),
+  async(req, res) => {
+    DiscountMetafields.createDefinitions(res.locals.shopify.session)
+  },
   shopify.redirectToShopifyOrAppRoot()
 );
 app.post(
