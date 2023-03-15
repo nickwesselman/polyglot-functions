@@ -140,7 +140,6 @@ json-as also requires adding the following `transform` configuration to the `opt
 ## Test your function on Shopify
 
 Use the following steps, selecting the `order-discount-assemblyscript` discount type, and using `ASSEMBLYSCRIPT` as your discount code.
-(Google codelabs doesn't support parameterized includes 🙃)
 
 <<include/test-shopify.md>>
 

@@ -92,7 +92,6 @@ error while executing at wasm backtrace:
 ## Test your function on Shopify
 
 Use the following steps, selecting the `order-discount-zig` discount type, and using `ZIG` as your discount code.
-(Google codelabs doesn't support parameterized includes 🙃)
 
 <<include/test-shopify.md>>
 

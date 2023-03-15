@@ -81,7 +81,6 @@ _Hint_: You can find a completed example on GitHub:
 ## Test your function on Shopify
 
 Use the following steps, selecting the `order-discount-javascript` discount type, and using `JAVASCRIPT` as your discount code.
-(Google codelabs doesn't support parameterized includes 🙃)
 
 <<include/test-shopify.md>>
 

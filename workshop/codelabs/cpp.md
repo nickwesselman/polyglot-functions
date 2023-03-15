@@ -75,7 +75,6 @@ This example uses the [json_struct](https://github.com/jorgen/json_struct) heade
 ## Test your function on Shopify
 
 Use the following steps, selecting the `order-discount-cpp` discount type, and using `C++` as your discount code.
-(Google codelabs doesn't support parameterized includes 🙃)
 
 <<include/test-shopify.md>>
 

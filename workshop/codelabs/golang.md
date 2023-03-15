@@ -89,7 +89,6 @@ go get -u github.com/tidwall/gjson
 ## Test your function on Shopify
 
 Use the following steps, selecting the `order-discount-golang` discount type, and using `GO` as your discount code.
-(Google codelabs doesn't support parameterized includes 🙃)
 
 <<include/test-shopify.md>>
 
