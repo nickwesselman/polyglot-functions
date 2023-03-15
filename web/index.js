@@ -148,8 +148,9 @@ app.get(shopify.config.auth.path, shopify.auth.begin());
 app.get(
   shopify.config.auth.callbackPath,
   shopify.auth.callback(),
-  async(req, res) => {
-    DiscountMetafields.createDefinitions(res.locals.shopify.session)
+  async(req, res, next) => {
+    DiscountMetafields.createDefinitions(res.locals.shopify.session);
+    next();
   },
   shopify.redirectToShopifyOrAppRoot()
 );
