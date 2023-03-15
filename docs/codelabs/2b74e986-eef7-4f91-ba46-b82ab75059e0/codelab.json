@@ -1,0 +1,21 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2023-03-14T22:25:14-04:00",
+  "id": "2b74e986-eef7-4f91-ba46-b82ab75059e0",
+  "duration": 0,
+  "title": "Group 3: Zig",
+  "summary": "How to create a function with Zig.",
+  "source": "zig.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "group-three"
+  ],
+  "tags": [],
+  "url": "2b74e986-eef7-4f91-ba46-b82ab75059e0"
+}

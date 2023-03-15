@@ -1,0 +1,21 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2023-03-14T22:22:04-04:00",
+  "id": "978ba497-0d94-42bb-a4de-ff1ec8b1a041",
+  "duration": 0,
+  "title": "** Prerequisites: Partner Account and Development Shop",
+  "summary": "Things you need to do first.",
+  "source": "prerequisites.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "prerequisite"
+  ],
+  "tags": [],
+  "url": "978ba497-0d94-42bb-a4de-ff1ec8b1a041"
+}

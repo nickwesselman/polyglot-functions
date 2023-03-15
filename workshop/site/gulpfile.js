@@ -41,6 +41,8 @@ const spawn = childprocess.spawn;
 const swig = require('swig-templates');
 const url = require('url');
 
+const DIST = "../../docs";
+
 // DEFAULT_GA is the default Google Analytics tracker ID
 const DEFAULT_GA = '';
 
@@ -96,7 +98,7 @@ gulp.task('clean:build', (callback) => {
 
 // clean:dist removes the dist directory
 gulp.task('clean:dist', (callback) => {
-  return del('dist')
+  return del(DIST, { force: true })
 });
 
 // clean:js removes the built javascript
@@ -245,43 +247,43 @@ gulp.task('build', gulp.series(
 // copy copies the built artifacts in build into dist/
 gulp.task('copy', (callback) => {
   // Explicitly do not use gulp here. It's too slow and messes up the symlinks
-  fs.rename('build', 'dist', callback);
+  fs.rename('build', DIST, callback);
 });
 
 // minify:css minifies the css
 gulp.task('minify:css', () => {
   const srcs = [
-    'dist/**/*.css',
-    '!dist/codelabs/**/*',
-    '!dist/elements/codelab-elements/*.css',
+    `${DIST}/**/*.css`,
+    `!${DIST}/codelabs/**/*`,
+    `!${DIST}/elements/codelab-elements/*.css`,
   ]
-  return gulp.src(srcs, { base: 'dist/' })
+  return gulp.src(srcs, { base: `${DIST}/` })
     .pipe(postcss(opts.postcss()))
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest(DIST));
 });
 
 // minify:css minifies the html
 gulp.task('minify:html', () => {
   const srcs = [
-    'dist/**/*.html',
-    '!dist/codelabs/**/*',
+    `${DIST}/**/*.html`,
+    `!${DIST}/codelabs/**/*`,
   ]
-  return gulp.src(srcs, { base: 'dist/' })
+  return gulp.src(srcs, { base: `${DIST}/` })
     .pipe(postcss(opts.postcss()))
     .pipe(htmlmin(opts.htmlmin()))
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest(DIST));
 });
 
 // minify:js minifies the javascript
 gulp.task('minify:js', () => {
   const srcs = [
-    'dist/**/*.js',
-    '!dist/codelabs/**/*',
-    '!dist/elements/codelab-elements/*.js',
+    `${DIST}/**/*.js`,
+    `!${DIST}/codelabs/**/*`,
+    `!${DIST}/elements/codelab-elements/*.js`,
   ]
-  return gulp.src(srcs, { base: 'dist/' })
+  return gulp.src(srcs, { base: `${DIST}/` })
     .pipe(uglify(opts.uglify()))
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest(DIST));
 });
 
 // minify minifies all minifiable things in dist
@@ -354,7 +356,7 @@ gulp.task('serve', gulp.series(
 // support live-reloading and should be used to verify final output before
 // publishing.
 gulp.task('serve:dist', gulp.series('dist', () => {
-  return gulp.src('dist')
+  return gulp.src(DIST)
     .pipe(webserver(opts.webserver()));
 }));
 
@@ -839,27 +841,14 @@ const sortCodelabs = (codelabs, view) => {
   });
 }
 
-// copyFilteredCodelabs copies all codelabs that match the given id regular
-// expression or view regular expression into the build/ folder. If no filters
-// are specified (i.e. if codelabRe and viewRe are both undefined), then this
-// function returns all codelabs in the codelabs directory.
 const copyFilteredCodelabs = (dest) =>  {
-  // No filters were specified, symlink the codelabs folder directly and save
-  // processing.
-  if (CODELABS_FILTER === '*' && VIEWS_FILTER === '*') {
-    const source = path.join(CODELABS_DIR);
-    const target = path.join(dest, CODELABS_NAMESPACE);
-    fs.ensureSymlinkSync(source, target, 'dir');
-    return
-  }
-
   const codelabs = collectCodelabs();
 
   for(let i = 0; i < codelabs.length; i++) {
     const codelab = codelabs[i];
     const source = path.join(CODELABS_DIR, codelab.id);
     const target = path.join(dest, CODELABS_NAMESPACE, codelab.id);
-    fs.ensureSymlinkSync(source, target, 'dir');
+    fs.copySync(source, target);
   }
 };
 
