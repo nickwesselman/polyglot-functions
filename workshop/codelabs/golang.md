@@ -23,7 +23,7 @@ npm run generate extension -- --type order_discounts --template wasm --name orde
 
 <<include/input-query-intro.md>>
 
-Replace the contents of `extensions/order-discount-rust/input.graphql` with the following from GitHub:
+Replace the contents of `extensions/order-discount-golang/input.graphql` with the following from GitHub:
 
 ### ➡️ [Get input query code](https://github.com/nickwesselman/polyglot-functions/blob/main/extensions/order-discount-golang/input.graphql)
 
