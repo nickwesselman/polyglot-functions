@@ -2,12 +2,12 @@
   "environment": "web",
   "format": "html",
   "prefix": "https://storage.googleapis.com",
-  "updated": "2023-03-15T14:56:32-04:00",
-  "id": "golang",
+  "updated": "2023-03-15T15:46:57-04:00",
+  "id": "assemblyscript",
   "duration": 0,
-  "title": "Group 2: Go",
-  "summary": "How to create a function with Go.",
-  "source": "golang.md",
+  "title": "Group 2: AssemblyScript",
+  "summary": "How to create a function with AssemblyScript.",
+  "source": "assemblyscript.md",
   "theme": "",
   "status": [
     "published"
@@ -17,5 +17,5 @@
   ],
   "tags": [],
   "feedback": "https://github.com/nickwesselman/polyglot-functions/issues",
-  "url": "golang"
+  "url": "assemblyscript"
 }

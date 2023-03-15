@@ -19,6 +19,22 @@ The following command will create an order discount Function at `extensions/orde
 npm run generate extension -- --type order_discounts --template wasm --name order-discount-golang
 ```
 
+## Initialize a new Go module
+
+1. Navigate to the extension folder for your Go function:
+
+    ```bash
+    cd extensions/order-discount-golang
+    ```
+
+1. Initialize the Go module:
+
+    ```bash
+    go mod init main
+    ```
+
+This will create a `go.mod` file.
+
 ## Define your input query
 
 <<include/input-query-intro.md>>
@@ -48,22 +64,6 @@ path = "order-discount-golang.wasm"
 ```
 
 The TinyGo build settings here minimize the module size. Shopify Functions executions are short lived and single threaded, so no scheduler or garbage collection is needed.
-
-## Initialize a new Go module
-
-1. Navigate to the extension folder for your Go function:
-
-    ```bash
-    cd extensions/order-discount-golang
-    ```
-
-1. Initialize the Go module:
-
-    ```bash
-    go mod init main
-    ```
-
-This will create a `go.mod` file.
 
 ## Write your function logic in Go
 
