@@ -1,0 +1,216 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Codelabs provide a guided, tutorial, hands-on coding experience. Most codelabs will step you through the process of building a small application, or adding a new feature to an existing application.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Codelabs">
+  <meta name="application-name" content="Codelabs">
+  <link rel="canonical" href="undefined/" />
+  <title>Codelabs</title>
+
+  <link rel="stylesheet" href="/styles/main.css">
+
+  
+
+  <link rel="import" href="/elements/elements.html">
+
+  <style is="custom-style">
+    :root {
+      --paper-tabs-selection-bar-color: currentcolor;
+      --paper-input-container-underline: {
+        display: none;
+      };
+      --paper-input-container-underline-focus: {
+        display: none;
+      };
+    }
+
+    .dropdown-filter {
+      --paper-input-container: {
+        padding: 8px;
+      }
+    }
+  </style>
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="#455a64">
+  <meta name="apple-mobile-web-app-title" content="Codelabs">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="194x194" href="/images/favicons/favicon-194x194.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/images/favicons/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="mask-icon" href="/images/favicons/safari-pinned-tab.svg" color="#455a64">
+  <meta name="msapplication-TileColor" content="#455a64">
+  <meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
+  <meta name="theme-color" content="#455a64">
+
+  <meta name="og:type" property="og:type" content="website" />
+  <meta name="og:title" property="og:title" content="Codelabs" />
+  <meta name="og:description" property="og:description" content="Codelabs provide a guided, tutorial, hands-on coding experience. Most codelabs will step you through the process of building a small application, or adding a new feature to an existing application." />
+  <meta name="og:url" property="og:url" content="undefined/" />
+  <meta name="og:site_name" property="og:site_name" content="Codelabs" />
+  <meta name="og:determiner" property="og:determiner" content="the" />
+  <meta name="og:locale" property="og:locale" content="en_US" />
+  <meta name="og:image" property="og:image" content="/images/og-image.png" />
+  <meta name="og:image:url" property="og:image:url" content="/images/og-image.png" />
+  <meta name="og:image:type" property="og:image:type" content="image/png" />
+  <meta name="og:image:width" property="og:image:width" content="1200" />
+  <meta name="og:image:height" property="og:image:height" content="1200" />
+  <meta name="og:image:alt" property="og:image:alt" content="Codelabs" />
+
+  <meta name="twitter:card" property="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" property="twitter:title" content="Codelabs" />
+  <meta name="twitter:description" property="twitter:description" content="Codelabs provide a guided, tutorial, hands-on coding experience. Most codelabs will step you through the process of building a small application, or adding a new feature to an existing application." />
+  <meta name="twitter:image" property="twitter:image" content="/images/og-image.png" />
+  <meta name="twitter:url" property="twitter:url" content="undefined/" />
+</head>
+
+<body id="app" is="body-bind" class="loading fullbleed ">
+  <paper-header-panel id="main" mode="standard" main>
+
+    
+    <header id="banner" down$="[[_toBoolean(selectedFilter)]]">
+      <div class="site-width">
+        
+        <h2 class="banner-title">Functions Polyglot Workshop</h2>
+        <div class="banner-description"
+             data-filter-selected$="[[_toBoolean(selectedFilter)]]">
+          </div>
+      </div>
+    </header>
+
+    <br />
+
+    <main>
+      <card-sorter id="cards" class="site-width">
+        
+          
+            
+            <a href="./codelabs/05e73721-43ae-40ed-a50b-7b3ee0e5b123/index.html?" on-tap="navigate"
+               class="codelab-card category-group-one"
+               data-category="group-one"
+               data-title="Group 1: Rust"
+               data-duration="0"
+               data-updated="2023-03-14T22:24:09-04:00"
+               data-tags=""
+               data-pin="">
+              <div class="description">Group 1: Rust</div>
+              <div class="card-duration">
+                <span></span>
+                <span>Updated Mar 15, 2023</span>
+              </div>
+              <div class="card-footer">
+                <div class="category-icon group-one-icon"></div>
+                <paper-button class="group-one-bg">Start</paper-button>
+              </div>
+            </a>
+          
+          
+            
+            <a href="./codelabs/80479db7-23d3-4cd7-8b7d-d1e5cab43e57/index.html?" on-tap="navigate"
+               class="codelab-card category-group-one"
+               data-category="group-one"
+               data-title="Group 1: JavaScript"
+               data-duration="0"
+               data-updated="2023-03-14T22:24:52-04:00"
+               data-tags=""
+               data-pin="">
+              <div class="description">Group 1: JavaScript</div>
+              <div class="card-duration">
+                <span></span>
+                <span>Updated Mar 15, 2023</span>
+              </div>
+              <div class="card-footer">
+                <div class="category-icon group-one-icon"></div>
+                <paper-button class="group-one-bg">Start</paper-button>
+              </div>
+            </a>
+          
+          
+            
+            <a href="./codelabs/2b74e986-eef7-4f91-ba46-b82ab75059e0/index.html?" on-tap="navigate"
+               class="codelab-card category-group-three"
+               data-category="group-three"
+               data-title="Group 3: Zig"
+               data-duration="0"
+               data-updated="2023-03-14T22:25:14-04:00"
+               data-tags=""
+               data-pin="">
+              <div class="description">Group 3: Zig</div>
+              <div class="card-duration">
+                <span></span>
+                <span>Updated Mar 15, 2023</span>
+              </div>
+              <div class="card-footer">
+                <div class="category-icon group-three-icon"></div>
+                <paper-button class="group-three-bg">Start</paper-button>
+              </div>
+            </a>
+          
+          
+            
+            <a href="./codelabs/92eca6a8-2120-46ae-a4c8-e47452fdfc73/index.html?" on-tap="navigate"
+               class="codelab-card category-group-two"
+               data-category="group-two"
+               data-title="Group 2: Go"
+               data-duration="0"
+               data-updated="2023-03-14T22:25:06-04:00"
+               data-tags=""
+               data-pin="">
+              <div class="description">Group 2: Go</div>
+              <div class="card-duration">
+                <span></span>
+                <span>Updated Mar 15, 2023</span>
+              </div>
+              <div class="card-footer">
+                <div class="category-icon group-two-icon"></div>
+                <paper-button class="group-two-bg">Start</paper-button>
+              </div>
+            </a>
+          
+          
+            
+            <a href="./codelabs/978ba497-0d94-42bb-a4de-ff1ec8b1a041/index.html?" on-tap="navigate"
+               class="codelab-card category-prerequisite"
+               data-category="prerequisite"
+               data-title="** Prerequisites: Partner Account and Development Shop"
+               data-duration="0"
+               data-updated="2023-03-14T22:22:04-04:00"
+               data-tags=""
+               data-pin="">
+              <div class="description">** Prerequisites: Partner Account and Development Shop</div>
+              <div class="card-duration">
+                <span></span>
+                <span>Updated Mar 15, 2023</span>
+              </div>
+              <div class="card-footer">
+                <div class="category-icon prerequisite-icon"></div>
+                <paper-button class="prerequisite-bg">Start</paper-button>
+              </div>
+            </a>
+          
+      </card-sorter>
+
+      <div id="loading-placeholder" class="site-width">
+        Loading Codelabs, please wait...
+      </div>
+    </main>
+
+  </paper-header-panel>
+
+  <script src="/scripts/main.js"></script>
+</body>
+</html>
