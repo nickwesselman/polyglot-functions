@@ -48,6 +48,7 @@
     "postcss-syntax": "^0.34.0"
   },
   "scripts": {
-    "start": "cd ../codelabs && mkdir -p build && claat export -o ./build/ *.md && cd ../site/ && npx gulp serve --codelabs-dir ../codelabs/build"
+    "start": "cd ../codelabs && mkdir -p build && claat export -o ./build/ *.md && cd ../site/ && npx gulp serve",
+    "build": "cd ../codelabs && mkdir -p build && claat export -o ./build/ *.md && cd ../site/ && npx gulp dist"
   }
 }
