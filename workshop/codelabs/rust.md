@@ -6,7 +6,15 @@ feedback link: https://github.com/nickwesselman/polyglot-functions/issues
 
 # Group 1: Rust
 
-## TODO: Install Rust prerequisites
+## Install Rust prerequisites
+
+1. [Install Rust](https://www.rust-lang.org/tools/install).
+    - On Windows, Rust requires the [Microsoft C++ Build Tools](https://learn.microsoft.com/en-us/windows/dev-environment/rust/setup). Make sure to select the Desktop development with C++ workload when installing the tools.
+1. Install cargo-wasi:
+
+    ```bash
+    cargo install cargo-wasi
+    ```
 
 ## Generate the function extension
 

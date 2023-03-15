@@ -15,7 +15,16 @@
 <body>
 <google-codelab-analytics gaid=""></google-codelab-analytics>
 <google-codelab codelab-gaid="" id="rust" title="Group 1: Rust" environment="web" feedback-link="https://github.com/nickwesselman/polyglot-functions/issues">
-<google-codelab-step label="TODO: Install Rust prerequisites" duration="0">
+<google-codelab-step label="Install Rust prerequisites" duration="0">
+<ol type="1">
+<li><a href="https://www.rust-lang.org/tools/install" target="_blank">Install Rust</a>.<ul>
+<li>On Windows, Rust requires the <a href="https://learn.microsoft.com/en-us/windows/dev-environment/rust/setup" target="_blank">Microsoft C++ Build Tools</a>. Make sure to select the Desktop development with C++ workload when installing the tools.</li>
+</ul>
+</li>
+<li>Install cargo-wasi:<pre><code language="language-bash" class="language-bash">cargo install cargo-wasi
+</code></pre>
+</li>
+</ol>
 </google-codelab-step>
 <google-codelab-step label="Generate the function extension" duration="0">
 <p>The following command will create an order discount Function at <code>extensions/order-discount-rust</code>, using our Rust boilerplate.</p>
