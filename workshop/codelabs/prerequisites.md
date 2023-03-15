@@ -69,11 +69,7 @@ You should see the home page of the app:
 
 You're doing great! For this workshop, the discount logic we will be implementing in each language is:
 
-```
-IF customer has VIP metafield with a value of 'true'
-AND products in their cart with tag X have a total of more than $Y
-THEN discount the order by Z%
-```
+<<include/function-logic.md>>
 
 But first, you will need to ensure that your store has a customer and products that meet these requirements. The app you just installed added a customer **metafield**. Metafields are custom data fields that stores and apps can add to various domain objects in Shopify.
 
