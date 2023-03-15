@@ -33,4 +33,6 @@
 
 You should immediately see the discount applied, based on the logic in the Wasm module you deployed to Shopify.
 
+Note that if you change the customer (to one that's not a VIP), or add a different product (which doesn't qualify for VIP discounts), the discount is removed.
+
 ![Applied discount](images/discount-success.png)

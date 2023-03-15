@@ -12,6 +12,8 @@ You can [sign up for a Partner account](https://partners.shopify.com/signup) on 
 
 ## Create a development store
 
+**Note:** Even if you already have a Shopify development store, you should create a new one for this workshop, to ensure you have the necessary settings and test data.
+
 1. From the Shopify Partners portal, navigate to **Stores** > **Add store** > **Create development store**.
 2. It's important for this workshop that you select the correct options when creating your store:
 
