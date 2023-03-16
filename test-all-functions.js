@@ -24,16 +24,29 @@ const runFunction = (path, input) => {
 
 const input = fs.readFileSync('inputs/input.json').toString();
 
-// build a cart with 128 items
+const x = 201;
 const largeInput = JSON.parse(input);
-for (i = 0; i < 6; i++) {
-    largeInput.cart.lines = largeInput.cart.lines.concat(JSON.parse(JSON.stringify(largeInput.cart.lines)));
+const largeConfig = JSON.parse(largeInput.discountNode.metafield.value);
+largeConfig.options = [
+    {
+        collections: ["gid://shopify/Collection/123456789","gid://shopify/Collection/123456789","gid://shopify/Collection/123456789","gid://shopify/Collection/123456789","gid://shopify/Collection/123456789"],
+        tags: ["ABCDEFG", "ABCDEFG", "ABCDEFG", "ABCDEFG"]
+    }
+];
+for (i = 0; i < x; i++) {
+     largeConfig.options.push(JSON.parse(JSON.stringify(largeConfig.options[0])));
 }
-//console.log(JSON.stringify(largeInput, null, 2));
+largeInput.discountNode.metafield.value = JSON.stringify(largeConfig);
+console.log(JSON.stringify(largeInput, null, 2));
+console.log(`JSON size: ${largeInput.discountNode.metafield.value.length}`);
+console.log(`Input size: ${JSON.stringify(largeInput).length}`);
 //console.log(largeInput.cart.lines.length)
 //process.exit(0);
 
+
+
 const testData = getFunctionModules()
+    .filter(module => module.split(path.sep)[1] == "order-discount-rust")
     .map(module => ({
         module,
         result: runFunction(module, input),
