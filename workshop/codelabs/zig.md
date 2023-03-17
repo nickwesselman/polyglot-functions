@@ -91,6 +91,10 @@ error while executing at wasm backtrace:
 
 ## Test your function on Shopify
 
+<aside class="negative">
+Zig WASI executables currently will not sucessfully execute on Shopify.
+</aside>
+
 Use the following steps, selecting the `order-discount-zig` discount type, and using `ZIG` as your discount code.
 
 <<include/test-shopify.md>>
