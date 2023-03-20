@@ -20,7 +20,7 @@ npm run generate extension -- --type order_discounts --template typescript --nam
 
 Replace the contents of `extensions/order-discount-typescript/input.graphql` with the following from GitHub:
 
-### ➡️ [Get input query code](https://github.com/nickwesselman/polyglot-functions/blob/main/extensions/order-discount-typescript/input.graphql)
+### ➡️ [Get input query code](https://github.com/nickwesselman/polyglot-functions/blob/main/app/extensions/order-discount-typescript/input.graphql)
 
 ## Generate types for the input query
 
@@ -56,7 +56,7 @@ In `src/index.ts`, implement the following function logic, outputting appropriat
 
 _Hint_: You can find a completed example on GitHub:
 
-### ➡️ [Get TypeScript function code](https://github.com/nickwesselman/polyglot-functions/blob/main/extensions/order-discount-typescript/src/index.ts)
+### ➡️ [Get TypeScript function code](https://github.com/nickwesselman/polyglot-functions/blob/main/app/extensions/order-discount-typescript/src/index.ts)
 
 ## Test your function locally
 

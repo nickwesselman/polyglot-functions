@@ -1,1 +1,3 @@
 codelabs/build/*
+node_modules
+dist

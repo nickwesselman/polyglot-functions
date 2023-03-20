@@ -46,7 +46,7 @@ npm run generate extension -- --type order_discounts --template wasm --name orde
 
 Replace the contents of `extensions/order-discount-zig/input.graphql` with the following from GitHub:
 
-### ➡️ [Get input query code](https://github.com/nickwesselman/polyglot-functions/blob/main/extensions/order-discount-zig/input.graphql)
+### ➡️ [Get input query code](https://github.com/nickwesselman/polyglot-functions/blob/main/app/extensions/order-discount-zig/input.graphql)
 
 ## Update your extension UI settings
 
