@@ -76,7 +76,7 @@ Update `src/main.zig` and implement the following function logic, outputting app
 
 _Hint_: You can find a completed example on GitHub:
 
-### ➡️ [Get Zig function code](https://github.com/nickwesselman/polyglot-functions/tree/main/extensions/order-discount-zig/src)
+### ➡️ [Get Zig function code](https://github.com/nickwesselman/polyglot-functions/tree/main/app/extensions/order-discount-zig/src)
 
 ## Test your function locally
 

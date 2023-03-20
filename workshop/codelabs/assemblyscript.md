@@ -97,7 +97,7 @@ In `assembly/index.ts`, implement the following function logic, outputting appro
 
 _Hint_: You can find a completed example on GitHub:
 
-### ➡️ [Get AssemblyScript function code](https://github.com/nickwesselman/polyglot-functions/tree/main/extensions/order-discount-assemblyscript/assembly)
+### ➡️ [Get AssemblyScript function code](https://github.com/nickwesselman/polyglot-functions/tree/main/app/extensions/order-discount-assemblyscript/assembly)
 
 This example requires adding json-as to your AssemblyScript project, and creating API classes for JSON parse/stringify:
 

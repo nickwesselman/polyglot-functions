@@ -58,7 +58,7 @@ Create a `src/main.cpp` file and implement the following function logic, outputt
 
 _Hint_: You can find a completed example on GitHub:
 
-### ➡️ [Get C++ function code](https://github.com/nickwesselman/polyglot-functions/tree/main/extensions/order-discount-cpp/src)
+### ➡️ [Get C++ function code](https://github.com/nickwesselman/polyglot-functions/tree/main/app/extensions/order-discount-cpp/src)
 
 This example uses the [json_struct](https://github.com/jorgen/json_struct) header library to parse and output JSON.
 

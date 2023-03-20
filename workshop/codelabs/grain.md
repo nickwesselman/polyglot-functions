@@ -54,7 +54,7 @@ Create `src/main.gr` and implement the following function logic, outputting appr
 
 _Hint_: You can find a completed example on GitHub:
 
-### ➡️ [Get Grain function code](https://github.com/nickwesselman/polyglot-functions/tree/main/extensions/order-discount-grain/src)
+### ➡️ [Get Grain function code](https://github.com/nickwesselman/polyglot-functions/tree/main/app/extensions/order-discount-grain/src)
 
 Since Grain doesn't yet have built-in JSON support, this example uses code copied from an [open Grain pull request](https://github.com/grain-lang/grain/pull/1133).
 
