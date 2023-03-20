@@ -12,7 +12,7 @@ THEN discount the order by Z%
 
 ## Implemented functions
 
-You can find the function implementations [in the app](./app/extensions);
+You can find the function implementations [in the app](./app/extensions).
 
 ## Codelabs
 
