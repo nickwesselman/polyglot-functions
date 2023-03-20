@@ -41,7 +41,7 @@ This will create a `go.mod` file.
 
 Replace the contents of `extensions/order-discount-golang/input.graphql` with the following from GitHub:
 
-### ➡️ [Get input query code](https://github.com/nickwesselman/polyglot-functions/blob/main/extensions/order-discount-golang/input.graphql)
+### ➡️ [Get input query code](https://github.com/nickwesselman/polyglot-functions/blob/main/app/extensions/order-discount-golang/input.graphql)
 
 ## Update your extension UI settings
 
@@ -74,7 +74,7 @@ The TinyGo build settings here minimize the module size. Shopify Functions execu
 
 _Hint_: You can find a completed example on GitHub:
 
-### ➡️ [Get Go function code](https://github.com/nickwesselman/polyglot-functions/blob/main/extensions/order-discount-golang/main/main.go)
+### ➡️ [Get Go function code](https://github.com/nickwesselman/polyglot-functions/blob/main/app/extensions/order-discount-golang/main/main.go)
 
 This example requires adding gjson to your Go module:
 

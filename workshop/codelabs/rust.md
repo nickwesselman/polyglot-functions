@@ -30,7 +30,7 @@ npm run generate extension -- --type order_discounts --template rust --name orde
 
 Replace the contents of `extensions/order-discount-rust/input.graphql` with the following from GitHub:
 
-### ➡️ [Get input query code](https://github.com/nickwesselman/polyglot-functions/blob/main/extensions/order-discount-rust/input.graphql)
+### ➡️ [Get input query code](https://github.com/nickwesselman/polyglot-functions/blob/main/app/extensions/order-discount-rust/input.graphql)
 
 ## Update your extension UI settings
 
@@ -48,7 +48,7 @@ In `extensions/order-discount-rust/src/main.rs`, implement the following functio
 
 _Hint_: You can find a completed example on GitHub:
 
-### ➡️ [Get Rust function code](https://github.com/nickwesselman/polyglot-functions/blob/main/extensions/order-discount-rust/src/main.rs)
+### ➡️ [Get Rust function code](https://github.com/nickwesselman/polyglot-functions/blob/main/app/extensions/order-discount-rust/src/main.rs)
 
 ## Test your function locally
 

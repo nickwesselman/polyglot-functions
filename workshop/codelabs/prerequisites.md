@@ -32,7 +32,7 @@ You can [sign up for a Partner account](https://partners.shopify.com/signup) on 
 1. Use the following command to create a copy of the app we will be using for this workshop:
 
     ```bash
-    npm init @shopify/app@pre -- --template https://github.com/nickwesselman/polyglot-functions --name polyglot-functions
+    npm init @shopify/app@pre -- --template https://github.com/nickwesselman/polyglot-functions/app --name polyglot-functions
     ```
 
 1. This will create an app in a folder called `polyglot-functions`. Navigate into it.
