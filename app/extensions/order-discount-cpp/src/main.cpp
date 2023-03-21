@@ -12,7 +12,7 @@ struct Configuration
     JS_OBJ(discountPercentage, qualifyingProductTotal);
 };
 
-FunctionResult function(FunctionInput input)
+FunctionResult function(FunctionInput &input)
 {
     FunctionResult result;
     result.discountApplicationStrategy = DiscountApplicationStrategy::MAXIMUM;
@@ -28,17 +28,15 @@ FunctionResult function(FunctionInput input)
 
     Configuration config = input.config<Configuration>();
 
-    // filter only qualifying products
-    std::vector<CartLine> qualifyingLines;
-    auto filter = [](CartLine line) { return line.merchandise.product.isQualifying; };
-    std::copy_if(input.cart.lines.begin(), input.cart.lines.end(), std::back_inserter(qualifyingLines), filter);
+    auto filter = [](CartLine &line) { return !line.merchandise.product.isQualifying; };
+    auto qualifyingItems = std::stable_partition(input.cart.lines.begin(), input.cart.lines.end(), filter);
 
     // get total for qualifying products
-    auto accumulate = [](float total, CartLine line)
+    auto accumulate = [](float total, CartLine &line)
     {
         return std::stof(line.cost.totalAmount.amount) + total;
     };
-    float total = std::accumulate(qualifyingLines.begin(), qualifyingLines.end(), 0.0f, accumulate);
+    float total = std::accumulate(qualifyingItems, input.cart.lines.end(), 0.0f, accumulate);
     
     if (total < config.qualifyingProductTotal)
     {
