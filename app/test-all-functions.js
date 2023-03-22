@@ -13,6 +13,11 @@ const getFunctionModules = () => {
             const config = toml.parse(configContent);
             return path.join(path.dirname(tomlPath), config.build.path);
         })
+        .filter(wasmPath => {
+            const exists = fs.existsSync(wasmPath);
+            if(!exists) console.warn(`${wasmPath} does not exist. Skipping`);
+            return exists;
+        });
 };
 
 const runFunction = (path, input) => {
