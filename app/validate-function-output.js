@@ -4,6 +4,11 @@ const fs = require('fs');
 const path = require('path');
 var toml = require('toml');
 
+// the first run of the function runner will print downloading logs which break this script
+const primeFunctionRunner = () => {
+    execSync(`npm exec -- function-runner --help`);
+};
+
 const runFunction = (path, input) => {
     const result = execSync(`npm exec -- function-runner -j -f ${path}`, {
         input
@@ -17,6 +22,8 @@ const getFunctionModule = () => {
     const config = toml.parse(configContent);
     return path.join(process.env.INIT_CWD, config.build.path);
 };
+
+primeFunctionRunner();
 
 const functionModule = getFunctionModule();
 const input = fs.readFileSync(0).toString();
