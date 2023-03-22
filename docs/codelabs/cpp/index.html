@@ -48,7 +48,7 @@ key = &#34;function-configuration&#34;
 <p>You also need to inform the Shopify CLI about how to build your C++ wasm module, and where to expect the build output.</p>
 <p>In <code>shopify.function.extension.toml</code>, replace the <code>[build]</code> section with the following:</p>
 <pre><code language="language-toml" class="language-toml">[build]
-command = &#34;/usr/local/wasi-sdk-19.0/bin/clang++ -Oz -fno-exceptions -std=c++17 --sysroot=/usr/local/wasi-sdk-19.0/share/wasi-sysroot src/main.cpp -o main.wasm&#34;
+command = &#34;/usr/local/wasi-sdk-19.0/bin/clang++ -O3 -fno-exceptions -flto -std=c++20 --sysroot=/usr/local/wasi-sdk-19.0/share/wasi-sysroot src/main.cpp -o main.wasm&#34;
 path = &#34;main.wasm&#34;
 </code></pre>
 <p>Adjust the <strong>command</strong> as needed for your WASI SDK path. Note that it appears twice. You may also create a build script (<a href="https://github.com/nickwesselman/polyglot-functions/blob/main/app/extensions/order-discount-cpp/build.sh" target="_blank">example</a>) and invoke that instead as your <strong>command</strong> (<a href="https://github.com/nickwesselman/polyglot-functions/blob/main/app/extensions/order-discount-cpp/shopify.function.extension.toml#L6" target="_blank">example</a>).</p>

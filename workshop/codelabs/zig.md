@@ -64,7 +64,7 @@ In `shopify.function.extension.toml`, replace the `[build]` section with the fol
 
 ```toml
 [build]
-command = "zig build -Drelease-small=true"
+command = "zig build -Drelease-fast=true"
 path = "zig-out/bin/order-discount-zig.wasm"
 ```
 

@@ -44,7 +44,7 @@ In `shopify.function.extension.toml`, replace the `[build]` section with the fol
 
 ```toml
 [build]
-command = "/usr/local/wasi-sdk-19.0/bin/clang++ -Oz -fno-exceptions -std=c++17 --sysroot=/usr/local/wasi-sdk-19.0/share/wasi-sysroot src/main.cpp -o main.wasm"
+command = "/usr/local/wasi-sdk-19.0/bin/clang++ -O3 -fno-exceptions -flto -std=c++20 --sysroot=/usr/local/wasi-sdk-19.0/share/wasi-sysroot src/main.cpp -o main.wasm"
 path = "main.wasm"
 ```
 

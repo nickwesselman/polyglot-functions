@@ -61,7 +61,7 @@ key = &#34;function-configuration&#34;
 <p>You also need to inform the Shopify CLI about how to build your Zig wasm module, and where to expect the build output.</p>
 <p>In <code>shopify.function.extension.toml</code>, replace the <code>[build]</code> section with the following:</p>
 <pre><code language="language-toml" class="language-toml">[build]
-command = &#34;zig build -Drelease-small=true&#34;
+command = &#34;zig build -Drelease-fast=true&#34;
 path = &#34;zig-out/bin/order-discount-zig.wasm&#34;
 </code></pre>
 </google-codelab-step>
