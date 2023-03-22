@@ -64,18 +64,6 @@ export class Metafield {
 }
 
 /**
- * Configuration Types
- * These represent the JSON metafield where we are storing our configuration.
- */
-
-@JSON
-export class Configuration {
-  discountPercentage: f64 = 0.0;
-  qualifyingProductTotal: f64 = 0.0;
-  qualifyingProductTags: string[];
-}
-
-/**
  * Output Types
  * These just represent the part of the schema needed for this function.
  **/

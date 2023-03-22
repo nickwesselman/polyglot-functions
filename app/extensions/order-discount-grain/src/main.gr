@@ -6,10 +6,12 @@ import Number from "number"
 import List from "list"
 import Json from "./json"
 
+// write a line to stderr
 let log = (logStr: String) => {
     File.fdWrite(File.stderr, logStr ++ "\n")
 }
 
+// read all from stdin
 let rec readInput = (input: String) => {
     let (partialInput, bytesRead) = Result.unwrap(File.fdRead(File.stdin, 1024))
     let mut result = String.concat(input, partialInput)
@@ -20,9 +22,7 @@ let rec readInput = (input: String) => {
     }    
 }
 
-let inputStr = readInput("")
-let input = Result.toOption(Json.parse(inputStr))
-
+// the json parsing used returns a DOM that needs to be searched
 let jsonProperty = (name, json) => {
     match (json) {
         Json.JSONObject(list) => {
@@ -41,12 +41,14 @@ let jsonProperty = (name, json) => {
     }
 }
 
-/* A little custom operator magic from Grain's @ospencer to clean up JSON navigation. */
+// A little custom operator magic from Grain's @ospencer to clean up JSON navigation.
 let property = field => json => jsonProperty(field, json)
 let (|>) = (option, transform) => Option.flatMap(transform, option)
 
+// Represents the merchant configuration for the discount
 record Configuration { discountPercentage: Number, qualifyingProductTotal: Number }
 
+// Parse the discount configuration metafield, which is a string with more JSON
 let getConfiguration = (json) => {
     let valueJson = json |> property("discountNode") |> property("metafield") |> property("value")
 
@@ -80,6 +82,7 @@ let getConfiguration = (json) => {
 
 }
 
+// helper function to determine if the customer is a VIP
 let isVip = (json) => {   
     let valueJson = json |> property("cart") |> property("buyerIdentity") |> property("customer") |> property("metafield") |> property("value")
     match (valueJson) {
@@ -91,6 +94,7 @@ let isVip = (json) => {
     }
 }
 
+//helper function for totalling qualifying products
 let getQualifyingTotal = (linesJsonArray) => {
     let qualifyingLines = List.filter((line => {
         let isQualifyingJson = Some(line) |> property("merchandise") |> property("product") |> property("isQualifying")
@@ -114,6 +118,7 @@ let getQualifyingTotal = (linesJsonArray) => {
     }, 0, qualifyingLines)
 }
 
+// helper function for totalling qualifying products
 let cartQualifies = (json, configuration) => {
     let linesJson = json |> property("cart") |> property("lines")
     match (linesJson) {
@@ -128,21 +133,24 @@ let cartQualifies = (json, configuration) => {
     }
 }
 
+// The discount business logic
 let discountFunction = (json) => {
     let noDiscount = "{
         \"discounts\": [],
         \"discountApplicationStrategy\": \"FIRST\"
     }"
 
+    // Parse the discount configuration metafield, which is a string with more JSON
     let configuration = getConfiguration(json);
 
     if (!isVip(json)) {
-        log("Customer is not a VIP")
+        // If there's no customer on the order yet or they're not a VIP, no discount
         noDiscount
     } else if (!cartQualifies(json, configuration)) {
-        log("Qualifying cart item total is unmet")
+        // Total all qualifying products. If there aren't enough, no discount
         noDiscount
     } else {
+        // Create an order discount using the configured percentage
         "{
             \"discounts\": [
                 {
@@ -166,5 +174,8 @@ let discountFunction = (json) => {
     }
 }
 
+// read the function input, calculate the discount, write the function output
+let inputStr = readInput("")
+let input = Result.toOption(Json.parse(inputStr))
 let outputJson = discountFunction(input)
 print(outputJson)

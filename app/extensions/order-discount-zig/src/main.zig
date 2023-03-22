@@ -1,22 +1,25 @@
 const std = @import("std");
 const api = @import("./api.zig");
 
+// Represents the merchant configuration for the discount
 const Configuration = struct { discountPercentage: f64 = 0, qualifyingProductTotal: f64 = 0 };
 
+// The discount business logic
 pub fn function(input: api.FunctionInput, allocator: std.mem.Allocator) ?api.FunctionResult {
     const noDiscount = api.FunctionResult{ .discounts = &[0]api.Discount{}, .discountApplicationStrategy = "MAXIMUM" };
 
+    // If there's no customer on the order yet or they're not a VIP, no discount
     var isVip: bool = false;
     if (input.cart.buyerIdentity) |buyer| if (buyer.customer) |customer|
         if (customer.metafield) |metafield| if (metafield.value) |valueStr|
             if (std.mem.eql(u8, valueStr, "true")) {
                 isVip = true;
             };
-
     if (!isVip) {
         return noDiscount;
     }
 
+    // Parse the discount configuration metafield, which is a string with more JSON
     var config: Configuration = .{};
     if (input.discountNode.metafield) |metafield| if (metafield.value) |configStr| {
         var stream = std.json.TokenStream.init(configStr);
@@ -29,6 +32,7 @@ pub fn function(input: api.FunctionInput, allocator: std.mem.Allocator) ?api.Fun
         return noDiscount;
     }
 
+    // Total all qualifying products. If there aren't enough, no discount
     var qualifyingTotal: f64 = 0;
     for (input.cart.lines) |line| {
         if (line.merchandise.product.isQualifying) {
@@ -39,6 +43,7 @@ pub fn function(input: api.FunctionInput, allocator: std.mem.Allocator) ?api.Fun
         return noDiscount;
     }
 
+    // Create an order discount using the configured percentage
     var excludedVariantIds = std.ArrayList([]const u8).init(allocator);
     var targets = std.ArrayList(api.Target).init(allocator);
     targets.append(.{
@@ -68,7 +73,9 @@ pub fn function(input: api.FunctionInput, allocator: std.mem.Allocator) ?api.Fun
     };
 }
 
+// read the function input, calculate the discount, write the function output
 pub fn main() u8 {
+    // arena allocator is better for short-lived execution like a CLI or Functions
     var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
     defer arena.deinit();
 

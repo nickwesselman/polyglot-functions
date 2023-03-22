@@ -8,23 +8,27 @@ import (
 	"github.com/tidwall/gjson"
 )
 
+// Represents the merchant configuration for the discount
 type Configuration struct {
 	DiscountPercentage     float64
 	QualifyingProductTotal float64
 	QualifyingProductTags  []string
 }
 
+// The discount business logic
 func calculateDiscount(input []byte) string {
 	noDiscount := `{
 		"discountApplicationStrategy": "FIRST",
 		"discounts": []
 	}`
 
+	// If there's no customer on the order yet or they're not a VIP, no discount
 	isVip := gjson.GetBytes(input, "cart.buyerIdentity.customer.metafield.value").Bool()
 	if !isVip {
 		return noDiscount
 	}
 
+	// Parse the discount configuration metafield, which is a string with more JSON
 	configurationJson := gjson.GetBytes(input, "discountNode.metafield.value").String()
 	configurationParsed := gjson.Parse(configurationJson)
 	configuration := Configuration{
@@ -32,6 +36,7 @@ func calculateDiscount(input []byte) string {
 		QualifyingProductTotal: configurationParsed.Get("qualifyingProductTotal").Float(),
 	}
 
+	// Total all qualifying products. If there aren't enough, no discount
 	qualifyingTotal := 0.0
 	gjson.GetBytes(input, "cart.lines").ForEach(func(_key gjson.Result, value gjson.Result) bool {
 		isQualifying := value.Get("merchandise.product.isQualifying").Bool()
@@ -40,11 +45,11 @@ func calculateDiscount(input []byte) string {
 		}
 		return true
 	})
-
 	if qualifyingTotal < configuration.QualifyingProductTotal {
 		return noDiscount
 	}
 
+	// Create an order discount using the configured percentage
 	return fmt.Sprintf(`{
 		"discountApplicationStrategy": "MAXIMUM",
 		"discounts": [
@@ -67,6 +72,7 @@ func calculateDiscount(input []byte) string {
 	}`, configuration.DiscountPercentage)
 }
 
+// read the function input, calculate the discount, write the function output
 func main() {
 	input, err := ioutil.ReadAll(os.Stdin)
 	if err != nil {

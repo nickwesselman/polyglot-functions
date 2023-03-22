@@ -5,16 +5,19 @@
 #include <numeric>
 #include <string>
 
+// Represents the merchant configuration for the discount
 struct Configuration {
   float discountPercentage;
   float qualifyingProductTotal;
   JS_OBJ(discountPercentage, qualifyingProductTotal);
 };
 
+// The discount business logic
 FunctionResult function(FunctionInput &input) {
   FunctionResult result;
   result.discountApplicationStrategy = DiscountApplicationStrategy::MAXIMUM;
 
+  // If there's no customer on the order yet or they're not a VIP, no discount
   if (!input.cart.buyerIdentity.has_value() ||
       !input.cart.buyerIdentity.value().customer.has_value() ||
       !input.cart.buyerIdentity.value()
@@ -31,25 +34,25 @@ FunctionResult function(FunctionInput &input) {
     return result;
   }
 
+  // Parse the discount configuration metafield, which is a string with more JSON
   Configuration config = input.config<Configuration>();
 
+  // Total all qualifying products. If there aren't enough, no discount
   auto filter = [](CartLine &line) {
     return !line.merchandise.product.isQualifying;
   };
   auto qualifyingItems = std::stable_partition(input.cart.lines.begin(),
                                                input.cart.lines.end(), filter);
-
-  // get total for qualifying products
   auto accumulate = [](float total, CartLine &line) {
     return std::stof(line.cost.totalAmount.amount) + total;
   };
   float total = std::accumulate(qualifyingItems, input.cart.lines.end(), 0.0f,
                                 accumulate);
-
   if (total < config.qualifyingProductTotal) {
     return result;
   }
 
+  // Create an order discount using the configured percentage
   result.discounts = std::vector<Discount>{
       // Discount
       {                           // Value
