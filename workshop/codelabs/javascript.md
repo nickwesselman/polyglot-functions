@@ -84,6 +84,10 @@ Use the following steps, selecting the `order-discount-javascript` discount type
 
 <<include/test-shopify.md>>
 
+## Compare performance and binary size
+
+<<include/compare-performance.md>>
+
 ## Awesome work!
 
 You're a JavaScript expert. Onto another language?

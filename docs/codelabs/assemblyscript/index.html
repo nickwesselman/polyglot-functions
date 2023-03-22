@@ -138,6 +138,17 @@ Once the deploy is complete, you will see a <strong>Deployed to Shopify!</strong
 <p>Note that if you change the customer (to one that&#39;s not a VIP), or add a different product (which doesn&#39;t qualify for VIP discounts), the discount is removed.</p>
 <p class="image-container"><img alt="Applied discount" src="img/c642dfa268d90a6b.png"></p>
 </google-codelab-step>
+<google-codelab-step label="Compare performance and binary size" duration="0">
+<p>The workshop app includes a test script which will execute all the function wasm modules you have created so far, and print a comparison of their instruction count and binary size.</p>
+<ol type="1">
+<li>If necessary, navigate back to your app root.<pre><code language="language-bash" class="language-bash">cd ../..
+</code></pre>
+</li>
+<li>Execute the following command to run the test script.<pre><code language="language-bash" class="language-bash">npm run function:test-all
+</code></pre>
+</li>
+</ol>
+</google-codelab-step>
 <google-codelab-step label="Awesome work!" duration="0">
 <p>You&#39;re a master assembler. Onto another language?</p>
 </google-codelab-step>

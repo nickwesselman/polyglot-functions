@@ -143,6 +143,10 @@ Use the following steps, selecting the `order-discount-assemblyscript` discount 
 
 <<include/test-shopify.md>>
 
+## Compare performance and binary size
+
+<<include/compare-performance.md>>
+
 ## Awesome work!
 
 You're a master assembler. Onto another language?

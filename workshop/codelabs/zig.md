@@ -95,6 +95,10 @@ Use the following steps, selecting the `order-discount-zig` discount type, and u
 
 <<include/test-shopify.md>>
 
+## Compare performance and binary size
+
+<<include/compare-performance.md>>
+
 ## Awesome work!
 
 All our base are belong to YOU!!! Onto another language?

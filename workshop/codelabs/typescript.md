@@ -84,6 +84,10 @@ Use the following steps, selecting the `order-discount-typescript` discount type
 
 <<include/test-shopify.md>>
 
+## Compare performance and binary size
+
+<<include/compare-performance.md>>
+
 ## Awesome work!
 
 You're a TypeScript maven. Onto another language?

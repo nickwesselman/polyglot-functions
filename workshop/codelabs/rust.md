@@ -66,6 +66,10 @@ Use the following steps, selecting the `order-discount-rust` discount type, and 
 
 <<include/test-shopify.md>>
 
+## Compare performance and binary size
+
+<<include/compare-performance.md>>
+
 ## Awesome work!
 
 You're a Rust champion. Onto another language?

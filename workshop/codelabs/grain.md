@@ -74,6 +74,10 @@ Use the following steps, selecting the `order-discount-grain` discount type, and
 
 <<include/test-shopify.md>>
 
+## Compare performance and binary size
+
+<<include/compare-performance.md>>
+
 ## Awesome work!
 
 You tamed the Grain! Onto another language?

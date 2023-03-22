@@ -78,6 +78,10 @@ Use the following steps, selecting the `order-discount-cpp` discount type, and u
 
 <<include/test-shopify.md>>
 
+## Compare performance and binary size
+
+<<include/compare-performance.md>>
+
 ## Awesome work!
 
 You put the "plus" in C++! Onto another language?
