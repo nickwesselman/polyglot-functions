@@ -31,8 +31,13 @@
 
 1. In **Discount code**, enter the code you just created, then click **Apply**.
 
-You should immediately see the discount applied, based on the logic in the Wasm module you deployed to Shopify.
+    - You should immediately see the discount applied, based on the logic in the Wasm module you deployed to Shopify.
+    - Note that if you change the customer (to one that's not a VIP), or add a different product (which doesn't qualify for VIP discounts), the discount is removed.
 
-Note that if you change the customer (to one that's not a VIP), or add a different product (which doesn't qualify for VIP discounts), the discount is removed.
+1. To debug your function, or view its output, you can review its logs in your [Partner Dashboard](https://partners.shopify.com/current/apps):
+
+    1. Log in to your Partner Dashboard and navigate to Apps > polyglot-functions > Extensions > {your function}.
+    1. Click on any function run to view its input, output, and any logs written to STDERR.
 
 ![Applied discount](images/discount-success.png)
+

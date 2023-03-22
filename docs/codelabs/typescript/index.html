@@ -96,10 +96,17 @@ Once the deploy is complete, you will see a <strong>Deployed to Shopify!</strong
 <li>Keep <strong>Discount code</strong> selected, and enter a discount code name based on the language of the discount you just created. (For example, <strong>RUST</strong> for Rust or <strong>ZIG</strong> for Zig.) Leave the other fields as default and click <strong>Save</strong>.</li>
 <li>Open your online store and add <strong>The Complete Snowboard</strong> to your cart. Continue to <strong>View my cart</strong> and <strong>Checkout</strong>.</li>
 <li>In <strong>Contact information</strong>, enter <strong>karine.ruby@example.com</strong>.</li>
-<li>In <strong>Discount code</strong>, enter the code you just created, then click <strong>Apply</strong>.</li>
+<li>In <strong>Discount code</strong>, enter the code you just created, then click <strong>Apply</strong>.<ul>
+<li>You should immediately see the discount applied, based on the logic in the Wasm module you deployed to Shopify.</li>
+<li>Note that if you change the customer (to one that&#39;s not a VIP), or add a different product (which doesn&#39;t qualify for VIP discounts), the discount is removed.</li>
+</ul>
+</li>
+<li>To debug your function, or view its output, you can review its logs in your <a href="https://partners.shopify.com/current/apps" target="_blank">Partner Dashboard</a>:<ol type="1">
+<li>Log in to your Partner Dashboard and navigate to Apps &gt; polyglot-functions &gt; Extensions &gt; {your function}.</li>
+<li>Click on any function run to view its input, output, and any logs written to STDERR.</li>
 </ol>
-<p>You should immediately see the discount applied, based on the logic in the Wasm module you deployed to Shopify.</p>
-<p>Note that if you change the customer (to one that&#39;s not a VIP), or add a different product (which doesn&#39;t qualify for VIP discounts), the discount is removed.</p>
+</li>
+</ol>
 <p class="image-container"><img alt="Applied discount" src="img/c642dfa268d90a6b.png"></p>
 </google-codelab-step>
 <google-codelab-step label="Compare performance and binary size" duration="0">
