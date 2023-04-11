@@ -1,8 +1,12 @@
 {
   "cart": {
+    "message": {
+      "value": "hello world"
+    },
     "lines": [
       {
         "merchandise": {
+          "id": "gid://ProductVariant/123456",
           "__typename": "ProductVariant",
           "product": {
             "isQualifying": true
@@ -16,6 +20,7 @@
       },
       {
         "merchandise": {
+          "id": "gid://ProductVariant/123456",
           "__typename": "ProductVariant",
           "product": {
             "isQualifying": false

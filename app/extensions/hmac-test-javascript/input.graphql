@@ -1,0 +1,35 @@
+query Input($qualifyingProductTags: [String!]!) {
+  cart {
+    message: attribute(key: "__message") {
+      value
+    }
+    lines {
+      merchandise {
+        __typename
+        ...on ProductVariant {
+          id
+          product {
+            isQualifying: hasAnyTag(tags: $qualifyingProductTags)
+          }
+        }
+      }
+      cost {
+        totalAmount {
+          amount
+        }
+      }
+    }
+    buyerIdentity {
+      customer {
+        metafield(namespace: "$app:polyglot-functions", key: "vip") {
+          value
+        }
+      }
+    }
+  }
+  discountNode {
+    metafield(namespace: "$app:polyglot-functions", key: "function-configuration") {
+      value
+    }
+  }
+}
