@@ -68,18 +68,12 @@ fn function(input: input::ResponseData) -> Result<output::FunctionResult> {
     Ok(output::FunctionResult {
         discounts: vec![
             output::Discount {
-                value: output::Value {
-                    percentage: Some(output::Percentage {
-                        value: config.discount_percentage.to_string(),
-                    }),
-                    fixed_amount: None,
-                },
-                targets: vec![output::Target {
-                    order_subtotal: Some(output::OrderSubtotalTarget {
-                        excluded_variant_ids: vec![],
-                    }),
-                    product_variant: None,
-                }],
+                value: output::Value::Percentage(output::Percentage {
+                    value: config.discount_percentage.to_string(),
+                }),
+                targets: vec![output::Target::OrderSubtotal(output::OrderSubtotalTarget {
+                    excluded_variant_ids: vec![],
+                })],
                 message: Some("VIP Discount".to_string()),
                 conditions: None,
             },

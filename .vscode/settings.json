@@ -1,5 +1,5 @@
 {
     "rust-analyzer.linkedProjects": [
-        "extensions/order-discount-rust/Cargo.toml"
+        "app/extensions/order-discount-rust/Cargo.toml"
     ]
 }
